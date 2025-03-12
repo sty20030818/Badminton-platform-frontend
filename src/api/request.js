@@ -2,6 +2,8 @@ import axios from "axios"
 import { message } from "ant-design-vue"
 import config from "@/config"
 
+const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc0MTY3NzA1MSwiZXhwIjoxNzQyMjgxODUxfQ.ADsQCxv5mFzKwfBajlO-LVf8LzY1aTR_HO-0jTmvGQ0';
+
 const service = axios.create({
     baseURL: config.BASE_API,
 })
@@ -11,6 +13,8 @@ const NETWORK_ERROR = "网络请求异常，请稍后重试"
 service.interceptors.request.use(
     function (config) {
         //* 在发送请求之前做些什么
+        // 添加token到请求头
+        config.headers['token'] = TOKEN;
         return config
     },
 
@@ -22,11 +26,10 @@ service.interceptors.request.use(
 
 //* 响应拦截器
 service.interceptors.response.use((res) => {
-    const { code, data, msg } = res.data
-    if (code === 200) {
-        return data
-    }
-    else {
+    const { status, message: msg, data } = res.data
+    if (status) {
+        return res.data
+    } else {
         message.error(msg || NETWORK_ERROR)
         return Promise.reject(msg || NETWORK_ERROR)
     }

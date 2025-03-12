@@ -11,7 +11,8 @@ const env = import.meta.env.MODE || 'production'
 
 const EnvConfig = {
   development: {
-    BASE_API: '/api',
+    // BASE_API: '/api',
+    BASE_API: 'http://localhost:3000',
     MOCK_API: 'https://apifoxmock.com/m1/5941848-5629784-default/api',
   },
   text: {

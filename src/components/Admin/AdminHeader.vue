@@ -1,53 +1,3 @@
-<script setup>
-    import { h, ref } from 'vue'
-    import { useAllDataStore } from '@/stores'
-    import {
-        MenuOutlined,
-        ReloadOutlined,
-        UserOutlined,
-        ReadOutlined,
-        GithubOutlined,
-        LogoutOutlined,
-        HomeOutlined
-    } from '@ant-design/icons-vue'
-
-    const store = useAllDataStore()
-    const toggleCollapse = () => {
-        store.state.isCollapse = !store.state.isCollapse
-    }
-    const reloadPage = () => {
-        window.location.reload()
-    }
-    const getImageUrl = (user) => {
-        return new URL(`../../assets/images/${user}.jpg`, import.meta.url).href
-    }
-    const basePath = ''
-    const routes = ref([
-    {
-        path: 'home',
-        breadcrumbName: 'home',
-    },
-    {
-        path: 'first',
-        breadcrumbName: 'first',
-        children: [
-        {
-            path: '/general',
-            breadcrumbName: 'General',
-        },
-        {
-            path: '/layout',
-            breadcrumbName: 'Layout',
-        }
-        ],
-    },
-    {
-        path: 'second',
-        breadcrumbName: 'second',
-    },
-    ])
-</script>
-
 <template>
     <a-layout-header class="ant-header">
         <a-space size="middle">
@@ -146,6 +96,57 @@
         </a-space>
     </a-layout-header>
 </template>
+
+<script setup>
+    import { h, ref } from 'vue'
+    import { useAllDataStore } from '@/stores'
+    import {
+        MenuOutlined,
+        ReloadOutlined,
+        UserOutlined,
+        ReadOutlined,
+        GithubOutlined,
+        LogoutOutlined,
+        HomeOutlined
+    } from '@ant-design/icons-vue'
+
+    const store = useAllDataStore()
+    const toggleCollapse = () => {
+        store.state.isCollapse = !store.state.isCollapse
+    }
+    const reloadPage = () => {
+        window.location.reload()
+    }
+    const getImageUrl = (user) => {
+        return new URL(`../../assets/images/${user}.jpg`, import.meta.url).href
+    }
+    const basePath = ''
+    const routes = ref([
+    {
+        path: 'home',
+        breadcrumbName: 'home',
+    },
+    {
+        path: 'first',
+        breadcrumbName: 'first',
+        children: [
+        {
+            path: '/general',
+            breadcrumbName: 'General',
+        },
+        {
+            path: '/layout',
+            breadcrumbName: 'Layout',
+        }
+        ],
+    },
+    {
+        path: 'second',
+        breadcrumbName: 'second',
+    },
+    ])
+</script>
+
 
 <style lang="less" scoped>
 	.ant-header {

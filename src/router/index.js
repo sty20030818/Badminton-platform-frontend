@@ -19,9 +19,24 @@ const routes = [
         component: () => import("../views/Admin/Home.vue"),
       },
       {
-        path: "user",
-        name: "Admin-User",
-        component: () => import("../views/Admin/User.vue"),
+        path: "users",
+        name: "Admin-Users",
+        component: () => import("../views/Admin/Users.vue"),
+      },
+      {
+        path: "events",
+        name: "Admin-Events",
+        component: () => import("../views/Admin/Events.vue"),
+      },
+      {
+        path: "groups",
+        name: "Admin-Groups",
+        component: () => import("../views/Admin/Groups.vue"),
+      },
+      {
+        path: "venues",
+        name: "Admin-Venues",
+        component: () => import("../views/Admin/Venues.vue"),
       },
     ]
   },

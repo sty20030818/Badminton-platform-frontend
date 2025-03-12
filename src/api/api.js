@@ -1,23 +1,14 @@
 /**
- ** 整个项目api的管理
+ * API 统一出口
  */
-import request from "./request"
+import userApi from './modules/user'
+import eventApi from './modules/event'
+import venueApi from './modules/venue'
+import homeApi from './modules/home'
 
 export default {
-    //* home组件 左侧表格数据获取
-    getTableData() {
-        return request({
-            url: '/adminHome/getTableData',
-            method: 'get',
-            mock: true
-        })
-    },
-    getUserData(params) {
-    return request({
-            url: '/adminHome/user/getUserData',
-            method: 'get',
-            data: params
-        })
-    },
-
+    ...userApi,
+    ...eventApi,
+    ...venueApi,
+    ...homeApi
 }

@@ -1,100 +1,3 @@
-<script setup>
-    import { computed, h, ref } from 'vue';
-    import { useAllDataStore } from '@/stores';
-    import {
-    MailOutlined,
-    CalendarOutlined,
-    AppstoreOutlined,
-    SettingOutlined,
-    } from '@ant-design/icons-vue';
-
-    const selectedKeys = ref([]);
-    const openKeys = ref([]);
-    const store = useAllDataStore();
-    const isCollapse = computed(() => store.state.isCollapse);
-
-    const items = ref([
-    {
-        key: '1',
-        icon: () => h(MailOutlined),
-        label: 'Navigation One',
-        title: 'Navigation One',
-    },
-    {
-        key: '2',
-        icon: () => h(CalendarOutlined),
-        label: 'Navigation Two',
-        title: 'Navigation Two',
-    },
-    {
-        key: 'sub1',
-        icon: () => h(AppstoreOutlined),
-        label: 'Navigation Three',
-        title: 'Navigation Three',
-        children: [
-        {
-            key: '3',
-            label: 'Option 3',
-            title: 'Option 3',
-        },
-        {
-            key: '4',
-            label: 'Option 4',
-            title: 'Option 4',
-        },
-        {
-            key: 'sub1-2',
-            label: 'Submenu',
-            title: 'Submenu',
-            children: [
-            {
-                key: '5',
-                label: 'Option 5',
-                title: 'Option 5',
-            },
-            {
-                key: '6',
-                label: 'Option 6',
-                title: 'Option 6',
-            },
-            ],
-        },
-        ],
-    },
-    {
-        key: 'sub2',
-        icon: () => h(SettingOutlined),
-        label: 'Navigation Four',
-        title: 'Navigation Four',
-        children: [
-        {
-            key: '7',
-            label: 'Option 7',
-            title: 'Option 7',
-        },
-        {
-            key: '8',
-            label: 'Option 8',
-            title: 'Option 8',
-        },
-        {
-            key: '9',
-            label: 'Option 9',
-            title: 'Option 9',
-        },
-        {
-            key: '10',
-            label: 'Option 10',
-            title: 'Option 10',
-        },
-        ],
-    },
-    ]);
-    const handleClick = menuInfo => {
-    console.log('click ', menuInfo);
-    };
-</script>
-
 <template>
 	<a-layout-sider class="ant-sider" width="225px" :collapsed="isCollapse">
 		<div class="logo-container" >
@@ -110,6 +13,71 @@
 		@click="handleClick"/>
     </a-layout-sider>
 </template>
+
+<script setup>
+    import { computed, h, ref } from 'vue';
+    import { useRouter } from 'vue-router';
+    import { useAllDataStore } from '@/stores';
+    import {
+    HomeOutlined,
+    UserOutlined,
+    CalendarOutlined,
+    GroupOutlined,
+    BankOutlined,
+    } from '@ant-design/icons-vue';
+
+    const router = useRouter();
+    const selectedKeys = ref([]);
+    const openKeys = ref([]);
+    const store = useAllDataStore();
+    const isCollapse = computed(() => store.state.isCollapse);
+
+    const items = ref([
+    {
+        key: '1',
+        icon: () => h(HomeOutlined),
+        label: '首页',
+        title: '首页',
+        path: '/admin/home'
+    },
+    {
+        key: '2',
+        icon: () => h(UserOutlined),
+        label: '用户管理',
+        title: '用户管理',
+        path: '/admin/users'
+    },
+    {
+        key: '3',
+        icon: () => h(CalendarOutlined),
+        label: '活动管理',
+        title: '活动管理',
+        path: '/admin/events'
+    },
+    {
+        key: '4',
+        icon: () => h(GroupOutlined),
+        label: '分组管理',
+        title: '分组管理',
+        path: '/admin/groups'
+    },
+    {
+        key: '5',
+        icon: () => h(BankOutlined),
+        label: '场馆管理',
+        title: '场馆管理',
+        path: '/admin/venues'
+    },
+    ]);
+
+    const handleClick = menuInfo => {
+        // console.log('click ', menuInfo);
+        const selectedItem = items.value.find(item => item.key === menuInfo.key);
+        if (selectedItem && selectedItem.path) {
+            router.push(selectedItem.path);
+        }
+    };
+</script>
 
 <style lang="less" scoped>
 	.ant-sider {

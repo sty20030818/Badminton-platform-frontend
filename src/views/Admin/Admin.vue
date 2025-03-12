@@ -1,10 +1,3 @@
-<script setup>'vue'
-import AdminSider from '@/components/Admin/AdminSider.vue'
-import AdminHeader from '@/components/Admin/AdminHeader.vue'
-import { RouterView } from 'vue-router'
-
-</script>
-
 <template>
     <div class="admin-layout">
         <a-layout class="lay-container">
@@ -19,6 +12,13 @@ import { RouterView } from 'vue-router'
         </a-layout>
     </div>
 </template>
+
+<script setup>'vue'
+import AdminSider from '@/components/Admin/AdminSider.vue'
+import AdminHeader from '@/components/Admin/AdminHeader.vue'
+import { RouterView } from 'vue-router'
+
+</script>
 
 <style scoped>
     .admin-layout,
