@@ -3,9 +3,24 @@ import { createRouter, createWebHashHistory } from "vue-router"
 //*制定路由规则
 const routes = [
   {
+    path: "/tailwind",
+    name: "Tailwind",
+    component: () => import("../views/tailwind.vue"),
+  },
+  {
     path: "/",
     name: "Home",
     component: () => import("../views/Home.vue"),
+  },
+  {
+    path: "/home2",
+    name: "Home2",
+    component: () => import("../views/Home2.vue"),
+  },
+  {
+    path: "/home3",
+    name: "Home3",
+    component: () => import("../views/Home3.vue"),
   },
   {
     path: "/admin",

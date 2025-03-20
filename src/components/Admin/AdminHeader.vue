@@ -41,9 +41,9 @@
 
         <a-space class="r-content">
             <a-dropdown
-                :placement="topRight"
+                placement="topRight"
                 :arrow="{ pointAtCenter: true }"
-                overlay-style="width: 270px;">
+                :overlay-style="{ width: '270px' }">
                 <a-badge>
                     <a-avatar size="large" :src="getImageUrl('user')" />
                 </a-badge>

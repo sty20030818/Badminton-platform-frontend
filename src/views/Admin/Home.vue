@@ -48,62 +48,70 @@
 
 <script setup>
     import { ref, getCurrentInstance, onMounted } from 'vue'
+    import vue from '@/assets/images/adminHome/vue.png'
+    import vueRouter from '@/assets/images/adminHome/vueRouter.svg'
+    import vite from '@/assets/images/adminHome/vite.svg'
+    import pinia from '@/assets/images/adminHome/pinia.svg'
+    import axios from '@/assets/images/adminHome/axios.png'
+    import tailwindcss from '@/assets/images/adminHome/tailwindcss.png'
+    import websocket from '@/assets/images/adminHome/websocket.png'
+    import antDesignVue from '@/assets/images/adminHome/antDesignVue.svg'
     // 这个proxy相当于组件对象
     // getCurrentInstance它的作用是获取当前组件的实例对象。
     const { proxy } = getCurrentInstance()
 
     const tableData = ref([
         {
-            logo: 'https://vuejs.org/images/logo.png',
+            logo: vue,
             title: 'Vue3',
             description: '渐进式 JavaScript 框架，易于上手，适用于构建用户界面。',
             class: '前端',
             date: '2014-02-06',
         },
         {
-            logo: 'https://router.vuejs.org/logo.svg',
+            logo: vueRouter,
             title: 'Vue Router',
             description: 'Vue.js 的官方路由,为单页应用 (SPA) 提供导航功能。',
             class: '前端',
             date: '2015-12-17',
         },
         {
-            logo: 'https://vitejs.dev/logo.svg',
+            logo: vite,
             title: 'Vite',
             description: '下一代前端工具链,提供极速的开发体验。',
             class: '前端',
             date: '2020-01-17',
         },
         {
-            logo: 'https://pinia.vuejs.org/logo.svg',
+            logo: pinia,
             title: 'Pinia',
             description: 'Vue 的直观、类型安全和灵活的存储库，可以轻松管理应用状态。',
             class: '前端',
             date: '2019-11-11',
         },
         {
-            logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTE2nqp4S29eIZbADRrnkJ1vmJpawDogU2t74_ARzbJ6z2HfCPf8qVKi7i1PLX-dOXgcO0&usqp=CAU',
+            logo: axios,
             title: 'Axios',
             description: '基于 Promise 的 HTTP 客户端，用于浏览器和 node.js。',
             class: '前端',
             date: '2014-04-09',
         },
         {
-            logo: 'https://next.antdv.com/assets/logo.1ef800a8.svg',
+            logo: antDesignVue,
             title: 'Ant Design Vue',
             description: '一套企业级的 UI 设计语言和 Vue 的实现。',
             class: '前端',
             date: '2018-09-30',
         },
         {
-            logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNNPDd17GydXvZPUct1BEq-63z90vtMZwqGH9F-qrOwOn8RrwVsGqWJ_SGBldjBZ2wc8Y&usqp=CAU',
+            logo: tailwindcss,
             title: 'Tailwind CSS',
             description: '一个实用为先的 CSS 框架，能够快速构建自定义设计。',
             class: '前端',
             date: '2017-11-01',
         },
         {
-            logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNF4BEuxfA4ng0SaXKfGikX6Mo0DSGDQppe97wDLXX0uHeHFmXy5vrN7ut0ahdsNP95CI&usqp=CAU',
+            logo: websocket,
             title: 'WebSocket',
             description: '在单个 TCP 连接上提供全双工通信协议。',
             class: '前端',

@@ -2,7 +2,7 @@ module.exports = {
   // 一行最多多少个字符
   printWidth: 150,
   // 指定每个缩进级别的空格数
-  tabWidth: 4,
+  tabWidth: 2,
   // 使用制表符而不是空格缩进行
   useTabs: true,
   // 在语句末尾打印分号

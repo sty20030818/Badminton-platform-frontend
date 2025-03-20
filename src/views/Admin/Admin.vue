@@ -13,11 +13,11 @@
     </div>
 </template>
 
-<script setup>'vue'
+<script setup>
 import AdminSider from '@/components/Admin/AdminSider.vue'
 import AdminHeader from '@/components/Admin/AdminHeader.vue'
+import AdminFooter from '@/components/Admin/AdminFooter.vue'
 import { RouterView } from 'vue-router'
-
 </script>
 
 <style scoped>

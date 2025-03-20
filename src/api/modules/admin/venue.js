@@ -1,40 +1,40 @@
-import request from '../request'
+import request from '../../request'
 
 export default {
-    // 获取活动列表
-    getEventList(params) {
+    // 获取场馆列表
+    getVenueList(params) {
         return request({
-            url: '/admin/events',
+            url: '/admin/venues',
             method: 'get',
             params,
             mock: false
         })
     },
 
-    // 新增活动
-    addEvent(data) {
+    // 新增场馆
+    addVenue(data) {
         return request({
-            url: '/admin/events',
+            url: '/admin/venues',
             method: 'post',
             data,
             mock: false
         })
     },
 
-    // 编辑活动
-    updateEvent(id, data) {
+    // 编辑场馆
+    updateVenue(id, data) {
         return request({
-            url: `/admin/events/${id}`,
+            url: `/admin/venues/${id}`,
             method: 'put',
             data,
             mock: false
         })
     },
 
-    // 删除活动
-    deleteEvent(id) {
+    // 删除场馆
+    deleteVenue(id) {
         return request({
-            url: `/admin/events/${id}`,
+            url: `/admin/venues/${id}`,
             method: 'delete',
             mock: false
         })

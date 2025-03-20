@@ -1,4 +1,4 @@
-import request from '../request'
+import request from '../../request'
 
 export default {
     // 获取首页表格数据

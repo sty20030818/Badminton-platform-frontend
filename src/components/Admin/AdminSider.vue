@@ -1,7 +1,7 @@
 <template>
 	<a-layout-sider class="ant-sider" width="225px" :collapsed="isCollapse">
 		<div class="logo-container" >
-            <img src="../../assets/images/badminton.png" alt="logo"/>
+            <img src="../../assets/images/logo.png" alt="logo"/>
             <span :style="{ opacity: isCollapse ? 0 : 1 }">在线约球平台</span>
         </div>
 

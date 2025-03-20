@@ -2,7 +2,7 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import App from "./App.vue";
 import router from "./router";
-import "@/assets/less/index.less";
+import "@/assets/css/index.css";
 import "@/api/mock.js"
 import api from "@/api/api"
 
