@@ -1,13 +1,7 @@
 <template>
-    <div>
-        groups
-    </div>
+	<div>groups</div>
 </template>
 
-<script setup>
+<script setup></script>
 
-</script>
-
-<style lang="less" scoped>
-
-</style>
+<style lang="less" scoped></style>

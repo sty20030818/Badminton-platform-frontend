@@ -7,8 +7,8 @@ import venueApi from './modules/admin/venue'
 import homeApi from './modules/admin/home'
 
 export default {
-    ...userApi,
-    ...eventApi,
-    ...venueApi,
-    ...homeApi
+	...userApi,
+	...eventApi,
+	...venueApi,
+	...homeApi,
 }
