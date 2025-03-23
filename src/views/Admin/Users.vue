@@ -1,20 +1,39 @@
 <template>
 	<div class="users-container">
 		<!-- 搜索区域 -->
-		<a-card class="search-card" :bordered="false">
-			<a-form layout="inline" :model="searchForm">
+		<a-card
+			class="search-card"
+			:bordered="false"
+		>
+			<a-form
+				layout="inline"
+				:model="searchForm"
+			>
 				<a-form-item label="用户名">
-					<a-input v-model:value="searchForm.username" placeholder="请输入" allowClear />
+					<a-input
+						v-model:value="searchForm.username"
+						placeholder="请输入"
+						allowClear
+					/>
 				</a-form-item>
 				<a-form-item label="用户ID">
-					<a-input v-model:value="searchForm.id" placeholder="请输入" allowClear />
+					<a-input
+						v-model:value="searchForm.id"
+						placeholder="请输入"
+						allowClear
+					/>
 				</a-form-item>
 				<a-form-item label="创建时间">
 					<a-range-picker v-model:value="searchForm.dateRange" />
 				</a-form-item>
 				<a-form-item>
 					<a-space>
-						<a-button type="primary" @click="handleSearch">查询</a-button>
+						<a-button
+							type="primary"
+							@click="handleSearch"
+						>
+							查询
+						</a-button>
 						<a-button @click="handleReset">重置</a-button>
 					</a-space>
 				</a-form-item>
@@ -24,7 +43,10 @@
 		<!-- 表格区域 -->
 		<a-card class="table-card">
 			<template #extra>
-				<a-button type="primary" @click="handleAdd">
+				<a-button
+					type="primary"
+					@click="handleAdd"
+				>
 					<template #icon><plus-outlined /></template>
 					新增用户
 				</a-button>
@@ -40,15 +62,28 @@
 				<!-- 自定义列 -->
 				<template #bodyCell="{ column, text, record }">
 					<template v-if="column.key === 'role'">
-						<a-tag :color="text === '管理员' ? 'blue' : 'default'">{{ text }}</a-tag>
+						<a-tag :color="text === '管理员' ? 'blue' : 'default'">
+							{{ text }}
+						</a-tag>
 					</template>
 					<template v-if="column.key === 'gender'">
 						<a-tag :color="genderColorMap[text]">{{ text }}</a-tag>
 					</template>
 					<template v-if="column.key === 'action'">
 						<a-space>
-							<a-button type="primary" @click="handleEdit(record)">修改</a-button>
-							<a-button type="primary" danger @click="handleDelete(record)">删除</a-button>
+							<a-button
+								type="primary"
+								@click="handleEdit(record)"
+							>
+								修改
+							</a-button>
+							<a-button
+								type="primary"
+								danger
+								@click="handleDelete(record)"
+							>
+								删除
+							</a-button>
 						</a-space>
 					</template>
 				</template>

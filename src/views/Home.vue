@@ -1,24 +1,7 @@
 <template>
 	<div class="min-h-screen relative overflow-hidden">
 		<!-- 导航栏 -->
-		<a-layout-header class="flex justify-between items-center px-16 py-5 bg-transparent h-20">
-			<div class="flex items-center gap-2.5">
-				<img src="@/assets/images/logo.png" alt="Badminton" class="h-10" />
-				<span class="text-2xl font-bold text-blue-500">羽你同乐</span>
-			</div>
-			<div class="flex justify-center items-center gap-10">
-				<a href="#" class="nav-item">活动预约</a>
-				<a href="#" class="nav-item">场地预约</a>
-				<a href="#" class="nav-item">赛事活动</a>
-				<a href="#" class="nav-item">关于我们</a>
-			</div>
-
-			<div class="mr-20">
-				<a-button type="primary" class="register-btn" shape="round" size="large" @click="router.push('/logintest')">
-					登录
-				</a-button>
-			</div>
-		</a-layout-header>
+		<Header />
 		<!-- 背景装饰 -->
 		<div class="absolute inset-0 overflow-hidden pointer-events-none">
 			<div
@@ -34,10 +17,21 @@
 			<div class="flex justify-between items-center relative px-[400px] h-full">
 				<div class="flex-1 z-10 max-w-[600px] text-left mr-20 relative">
 					<h1 class="text-pink-400 text-7xl font-bold leading-tight mb-10">羽毛球场地</h1>
-					<h1 class="text-sky-500 text-8xl font-bold leading-tight mb-16">智能预约平台</h1>
-					<p class="text-gray-500 text-2xl mb-2 max-w-[500px]">一站式羽毛球场地预约系统</p>
+					<h1 class="text-sky-500 text-8xl font-bold leading-tight mb-16">
+						智能预约平台
+					</h1>
+					<p class="text-gray-500 text-2xl mb-2 max-w-[500px]">
+						一站式羽毛球场地预约系统
+					</p>
 					<p class="text-gray-500 text-2xl mb-10 max-w-[500px]">让每一次运动都轻松愉快</p>
-					<a-button type="primary" class="explore-btn" shape="round" size="large"> 立即体验 </a-button>
+					<a-button
+						type="primary"
+						class="explore-btn"
+						shape="round"
+						size="large"
+					>
+						立即体验
+					</a-button>
 
 					<div class="flex gap-10 mt-16">
 						<div class="text-left">
@@ -94,37 +88,12 @@
 
 <script setup>
 	import { useRouter } from 'vue-router'
+	import Header from '@/layout/Header.vue'
 
 	const router = useRouter()
 </script>
 
 <style scoped>
-	.nav-item {
-		color: #333333b2;
-		text-decoration: none;
-		font-size: 22px;
-		font-weight: 500;
-		transition: color 0.3s;
-	}
-
-	.nav-item:hover {
-		color: #ff7eb3;
-	}
-
-	.register-btn {
-		background: #ff7eb3;
-		border: none;
-		padding: 8px 24px;
-		height: auto;
-		font-size: 18px;
-		font-weight: 500;
-		box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
-	}
-
-	.register-btn:hover {
-		background: #ff6b9e;
-	}
-
 	.explore-btn {
 		background: #ff7eb3;
 		border: none;

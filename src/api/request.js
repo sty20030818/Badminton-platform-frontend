@@ -1,9 +1,7 @@
 import axios from 'axios'
 import { message } from 'ant-design-vue'
 import config from '@/config'
-
-const TOKEN =
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc0MjU1MjU2MywiZXhwIjoxNzQzMTU3MzYzfQ.OHSvNsaxecU279EcVNWXgrTemGpL75VTQo_iP88VOgo'
+import { useAuthStore } from '@/stores/auth'
 
 const service = axios.create({
 	baseURL: config.BASE_API,
@@ -14,8 +12,11 @@ const NETWORK_ERROR = '网络请求异常，请稍后重试'
 service.interceptors.request.use(
 	function (config) {
 		//* 在发送请求之前做些什么
-		// 添加token到请求头
-		config.headers['token'] = TOKEN
+		const authStore = useAuthStore()
+		const token = authStore.getToken()
+		if (token) {
+			config.headers['token'] = token
+		}
 		return config
 	},
 
@@ -26,15 +27,31 @@ service.interceptors.request.use(
 )
 
 //* 响应拦截器
-service.interceptors.response.use((res) => {
-	const { status, message: msg, data } = res.data
-	if (status) {
+// service.interceptors.response.use((res) => {
+// 	const { status, message: msg, data } = res.data
+// 	if (status) {
+// 		return res.data
+// 	} else {
+// 		message.error(msg || NETWORK_ERROR)
+// 		return Promise.reject(msg || NETWORK_ERROR)
+// 	}
+// })
+
+service.interceptors.response.use(
+	(res) => {
 		return res.data
-	} else {
-		message.error(msg || NETWORK_ERROR)
-		return Promise.reject(msg || NETWORK_ERROR)
-	}
-})
+	},
+	(error) => {
+		if (error.response && error.response.data) {
+			return error.response.data
+		}
+		return {
+			status: false,
+			message: NETWORK_ERROR,
+			errors: [NETWORK_ERROR],
+		}
+	},
+)
 
 function request(options) {
 	options.method = options.method || 'get'

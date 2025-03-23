@@ -7,7 +7,12 @@ function param2Obj(url) {
 		return {}
 	}
 	return JSON.parse(
-		'{"' + decodeURIComponent(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}',
+		'{"' +
+			decodeURIComponent(search)
+				.replace(/"/g, '\\"')
+				.replace(/&/g, '","')
+				.replace(/=/g, '":"') +
+			'"}',
 	)
 }
 
@@ -44,7 +49,9 @@ export default {
 			return true
 		})
 		//分页
-		const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
+		const pageList = mockList.filter(
+			(item, index) => index < limit * page && index >= limit * (page - 1),
+		)
 		return {
 			code: 200,
 			data: {

@@ -1,8 +1,16 @@
 <template>
 	<a-layout-header class="ant-header">
 		<a-space size="middle">
-			<a-button type="text" :icon="h(MenuOutlined)" @click="toggleCollapse" />
-			<a-button type="text" :icon="h(ReloadOutlined)" @click="reloadPage" />
+			<a-button
+				type="text"
+				:icon="h(MenuOutlined)"
+				@click="toggleCollapse"
+			/>
+			<a-button
+				type="text"
+				:icon="h(ReloadOutlined)"
+				@click="reloadPage"
+			/>
 
 			<!-- <a-breadcrumb :routes="routes" separator=">">
                 <template #itemRender="{ route, paths }">
@@ -32,18 +40,31 @@
 		</a-space>
 
 		<a-space class="r-content">
-			<a-dropdown placement="topRight" :arrow="{ pointAtCenter: true }" :overlay-style="{ width: '270px' }">
+			<a-dropdown
+				placement="topRight"
+				:arrow="{ pointAtCenter: true }"
+				:overlay-style="{ width: '270px' }"
+			>
 				<a-badge>
-					<a-avatar size="large" :src="getImageUrl('user')" />
+					<a-avatar
+						size="large"
+						:src="getImageUrl('user')"
+					/>
 				</a-badge>
 
 				<template #overlay>
 					<a-menu>
 						<a-menu-item>
 							<a-space size="middle">
-								<a-avatar size="large" :src="getImageUrl('user')" />
+								<a-avatar
+									size="large"
+									:src="getImageUrl('user')"
+								/>
 
-								<a-space direction="vertical" style="gap: 0">
+								<a-space
+									direction="vertical"
+									style="gap: 0"
+								>
 									<p>我叫石头鱼</p>
 									<p style="color: #a4b0be">2985707459@qq.com</p>
 								</a-space>
@@ -52,7 +73,11 @@
 						<a-menu-divider />
 
 						<a-menu-item>
-							<a target="_blank" rel="noopener noreferrer" href="/">
+							<a
+								target="_blank"
+								rel="noopener noreferrer"
+								href="/"
+							>
 								<UserOutlined />
 								个人中心
 							</a>
@@ -60,13 +85,21 @@
 						<a-menu-divider />
 
 						<a-menu-item>
-							<a target="_blank" rel="noopener noreferrer" href="/">
+							<a
+								target="_blank"
+								rel="noopener noreferrer"
+								href="/"
+							>
 								<read-outlined />
 								文档
 							</a>
 						</a-menu-item>
 						<a-menu-item>
-							<a target="_blank" rel="noopener noreferrer" href="/">
+							<a
+								target="_blank"
+								rel="noopener noreferrer"
+								href="/"
+							>
 								<github-outlined />
 								Github
 							</a>
@@ -74,7 +107,11 @@
 						<a-menu-divider />
 
 						<a-menu-item>
-							<a target="_blank" rel="noopener noreferrer" href="/">
+							<a
+								target="_blank"
+								rel="noopener noreferrer"
+								href="/"
+							>
 								<LogoutOutlined />
 								退出登录
 							</a>
@@ -107,7 +144,7 @@
 		window.location.reload()
 	}
 	const getImageUrl = (user) => {
-		return new URL(`../../assets/images/${user}.jpg`, import.meta.url).href
+		return new URL(`../../assets/images/avatars/${user}.jpg`, import.meta.url).href
 	}
 	const basePath = ''
 	const routes = ref([
@@ -136,7 +173,7 @@
 	])
 </script>
 
-<style lang="less" scoped>
+<style scoped>
 	.ant-header {
 		height: 55px;
 		line-height: 50px;

@@ -1,7 +1,14 @@
 <template>
-	<a-layout-sider class="ant-sider" width="225px" :collapsed="isCollapse">
+	<a-layout-sider
+		class="ant-sider"
+		width="225px"
+		:collapsed="isCollapse"
+	>
 		<div class="logo-container">
-			<img src="../../assets/images/logo.png" alt="logo" />
+			<img
+				src="@/assets/images/logo.png"
+				alt="logo"
+			/>
 			<span :style="{ opacity: isCollapse ? 0 : 1 }">在线约球平台</span>
 		</div>
 
@@ -19,7 +26,13 @@
 	import { computed, h, ref } from 'vue'
 	import { useRouter } from 'vue-router'
 	import { useAllDataStore } from '@/stores'
-	import { HomeOutlined, UserOutlined, CalendarOutlined, GroupOutlined, BankOutlined } from '@ant-design/icons-vue'
+	import {
+		HomeOutlined,
+		UserOutlined,
+		CalendarOutlined,
+		GroupOutlined,
+		BankOutlined,
+	} from '@ant-design/icons-vue'
 
 	const router = useRouter()
 	const selectedKeys = ref([])

@@ -11,18 +11,32 @@
 							<p style="font-size: 16px">今天 晴 , 温度 : 0~100°C</p>
 						</template>
 						<template #avatar>
-							<a-avatar :size="88" :src="getImageUrl('user')" />
+							<a-avatar
+								:size="88"
+								:src="getImageUrl('user')"
+							/>
 						</template>
 					</a-card-meta>
 				</a-card>
 			</a-col>
 
 			<a-col :span="16">
-				<a-card title="技术栈" hoverable>
-					<a-card-grid style="width: 25%" v-for="item in tableData" :key="item.title">
+				<a-card
+					title="技术栈"
+					hoverable
+				>
+					<a-card-grid
+						style="width: 25%"
+						v-for="item in tableData"
+						:key="item.title"
+					>
 						<div class="card-content">
 							<div class="card-header">
-								<img :src="item.logo" alt="item.title" class="card-logo" />
+								<img
+									:src="item.logo"
+									alt="item.title"
+									class="card-logo"
+								/>
 								<span>{{ item.title }}</span>
 							</div>
 							<p class="card-description">{{ item.description }}</p>
@@ -36,7 +50,10 @@
 			</a-col>
 
 			<a-col :span="8">
-				<a-card title="标题" :bordered="false">
+				<a-card
+					title="标题"
+					:bordered="false"
+				>
 					<p>Card content</p>
 				</a-card>
 			</a-col>
@@ -56,7 +73,7 @@
 	import antDesignVue from '@/assets/images/adminHome/antDesignVue.svg'
 	// 这个proxy相当于组件对象
 	// getCurrentInstance它的作用是获取当前组件的实例对象。
-	const { proxy } = getCurrentInstance()
+	// const { proxy } = getCurrentInstance()
 
 	const tableData = ref([
 		{
@@ -118,7 +135,7 @@
 	])
 
 	const getImageUrl = (user) => {
-		return new URL(`../../assets/images/${user}.jpg`, import.meta.url).href
+		return new URL(`../../assets/images/avatars/${user}.jpg`, import.meta.url).href
 	}
 
 	// 请求tabledata数据的方法

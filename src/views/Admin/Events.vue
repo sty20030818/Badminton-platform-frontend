@@ -1,20 +1,42 @@
 <template>
 	<div class="events-container">
 		<!-- 搜索区域 -->
-		<a-card class="search-card" :bordered="false">
-			<a-form layout="inline" :model="searchForm">
+		<a-card
+			class="search-card"
+			:bordered="false"
+		>
+			<a-form
+				layout="inline"
+				:model="searchForm"
+			>
 				<a-form-item label="活动名称">
-					<a-input v-model:value="searchForm.name" placeholder="请输入" allowClear />
+					<a-input
+						v-model:value="searchForm.name"
+						placeholder="请输入"
+						allowClear
+					/>
 				</a-form-item>
 				<a-form-item label="活动ID">
-					<a-input v-model:value="searchForm.id" placeholder="请输入" allowClear />
+					<a-input
+						v-model:value="searchForm.id"
+						placeholder="请输入"
+						allowClear
+					/>
 				</a-form-item>
 				<a-form-item label="活动时间">
-					<a-range-picker v-model:value="searchForm.dateRange" showTime />
+					<a-range-picker
+						v-model:value="searchForm.dateRange"
+						showTime
+					/>
 				</a-form-item>
 				<a-form-item>
 					<a-space>
-						<a-button type="primary" @click="handleSearch">查询</a-button>
+						<a-button
+							type="primary"
+							@click="handleSearch"
+						>
+							查询
+						</a-button>
 						<a-button @click="handleReset">重置</a-button>
 					</a-space>
 				</a-form-item>
@@ -24,7 +46,10 @@
 		<!-- 表格区域 -->
 		<a-card class="table-card">
 			<template #extra>
-				<a-button type="primary" @click="handleAdd">
+				<a-button
+					type="primary"
+					@click="handleAdd"
+				>
 					<template #icon><plus-outlined /></template>
 					新增活动
 				</a-button>
@@ -40,12 +65,26 @@
 				<!-- 自定义列 -->
 				<template #bodyCell="{ column, text, record }">
 					<template v-if="column.key === 'difficulty'">
-						<a-rate :value="text" disabled />
+						<a-rate
+							:value="text"
+							disabled
+						/>
 					</template>
 					<template v-if="column.key === 'action'">
 						<a-space>
-							<a-button type="primary" @click="handleEdit(record)">修改</a-button>
-							<a-button type="primary" danger @click="handleDelete(record)">删除</a-button>
+							<a-button
+								type="primary"
+								@click="handleEdit(record)"
+							>
+								修改
+							</a-button>
+							<a-button
+								type="primary"
+								danger
+								@click="handleDelete(record)"
+							>
+								删除
+							</a-button>
 						</a-space>
 					</template>
 				</template>
@@ -168,7 +207,9 @@
 					...event,
 					key: event.id,
 					time: dayjs(event.time).format('YYYY年MM月DD日 HH:mm'),
-					registrationDeadline: dayjs(event.registrationDeadline).format('YYYY年MM月DD日 HH:mm'),
+					registrationDeadline: dayjs(event.registrationDeadline).format(
+						'YYYY年MM月DD日 HH:mm',
+					),
 					createdAt: dayjs(event.createdAt).format('YYYY年MM月DD日 HH:mm'),
 				}))
 				pagination.value = { ...pagination.value, ...pager }

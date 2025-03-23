@@ -1,108 +1,179 @@
 <template>
 	<div class="login-page">
-		<div class="container" :class="{ active: isActive }">
-			<div class="form-box login">
-				<a-form :model="loginForm" @finish="handleLogin">
-					<h1>登录</h1>
-					<a-form-item
-						name="login_username"
-						:rules="[{ required: true, message: '请输入用户名!' }]"
-						class="custom-form-item"
+		<transition
+			name="slide-fade"
+			mode="out-in"
+		>
+			<div
+				v-if="!isClosing"
+				class="container"
+				:class="{ active: isActive, entering: isEntering }"
+			>
+				<div class="form-box login">
+					<div
+						class="close-button"
+						@click="handleClose"
 					>
-						<a-input v-model:value="loginForm.login_username" placeholder="用户名">
-							<template #prefix>
-								<user-outlined />
-							</template>
-						</a-input>
-					</a-form-item>
-					<a-form-item
-						name="login_password"
-						:rules="[{ required: true, message: '请输入密码!' }]"
-						class="custom-form-item"
+						<close-outlined />
+					</div>
+					<a-form
+						:model="loginForm"
+						@finish="handleLogin"
 					>
-						<a-input-password v-model:value="loginForm.login_password" placeholder="密码">
-							<template #prefix>
-								<lock-outlined />
-							</template>
-						</a-input-password>
+						<h1>登录</h1>
+						<a-form-item
+							name="login_username"
+							:rules="[{ required: true, message: '快点输入用户名!!!!!' }]"
+							class="custom-form-item"
+						>
+							<a-input
+								v-model:value="loginForm.login_username"
+								placeholder="用户名"
+							>
+								<template #prefix>
+									<user-outlined />
+								</template>
+							</a-input>
+						</a-form-item>
+						<a-form-item
+							name="login_password"
+							:rules="[{ required: true, message: '快点输入密码!!!!!' }]"
+							class="custom-form-item"
+						>
+							<a-input-password
+								v-model:value="loginForm.login_password"
+								placeholder="密码"
+							>
+								<template #prefix>
+									<lock-outlined />
+								</template>
+							</a-input-password>
+						</a-form-item>
 						<div class="forgot-link">
 							<a href="#">忘记密码?</a>
 						</div>
-					</a-form-item>
-					<a-button type="primary" html-type="submit" class="login-button" block>登录</a-button>
-					<p>或通过社交平台登录</p>
-				</a-form>
-			</div>
+						<a-button
+							type="primary"
+							html-type="submit"
+							class="login-button"
+							block
+						>
+							登录
+						</a-button>
+						<p>或通过社交平台登录</p>
+					</a-form>
+				</div>
 
-			<div class="form-box register">
-				<a-form :model="registerForm" @finish="handleRegister">
-					<h1>注册</h1>
-					<a-form-item
-						name="register_username"
-						:rules="[{ required: true, message: '请输入用户名!' }]"
-						class="custom-form-item"
+				<div class="form-box register">
+					<a-form
+						:model="registerForm"
+						@finish="handleRegister"
 					>
-						<a-input v-model:value="registerForm.register_username" placeholder="用户名">
-							<template #prefix>
-								<user-outlined />
-							</template>
-						</a-input>
-					</a-form-item>
-					<a-form-item
-						name="register_email"
-						:rules="[
-							{ required: true, message: '请输入邮箱!' },
-							{ type: 'email', message: '请输入有效的邮箱地址!' },
-						]"
-						class="custom-form-item"
-					>
-						<a-input v-model:value="registerForm.register_email" placeholder="邮箱">
-							<template #prefix>
-								<mail-outlined />
-							</template>
-						</a-input>
-					</a-form-item>
-					<a-form-item
-						name="register_password"
-						:rules="[{ required: true, message: '请输入密码!' }]"
-						class="custom-form-item"
-					>
-						<a-input-password v-model:value="registerForm.register_password" placeholder="密码">
-							<template #prefix>
-								<lock-outlined />
-							</template>
-						</a-input-password>
+						<h1>注册</h1>
+						<a-form-item
+							name="register_username"
+							:rules="[{ required: true, message: '快点输入用户名!!!!!' }]"
+							class="custom-form-item"
+						>
+							<a-input
+								v-model:value="registerForm.register_username"
+								placeholder="用户名"
+							>
+								<template #prefix>
+									<user-outlined />
+								</template>
+							</a-input>
+						</a-form-item>
+						<a-form-item
+							name="register_email"
+							:rules="[
+								{ required: true, message: '快点输入邮箱!!!!!' },
+								{ type: 'email', message: '请输入有效的邮箱地址!!!!!' },
+							]"
+							class="custom-form-item"
+						>
+							<a-input
+								v-model:value="registerForm.register_email"
+								placeholder="邮箱"
+							>
+								<template #prefix>
+									<mail-outlined />
+								</template>
+							</a-input>
+						</a-form-item>
+						<a-form-item
+							name="register_password"
+							:rules="[{ required: true, message: '快点输入密码!!!!!' }]"
+							class="custom-form-item"
+						>
+							<a-input-password
+								v-model:value="registerForm.register_password"
+								placeholder="密码"
+							>
+								<template #prefix>
+									<lock-outlined />
+								</template>
+							</a-input-password>
+						</a-form-item>
 						<div class="forgot-link">
 							<a href="#">忘记密码?</a>
 						</div>
-					</a-form-item>
-					<a-button type="primary" html-type="submit" class="register-button" block>注册</a-button>
-					<p>或者在社交平台上注册</p>
-				</a-form>
-			</div>
-
-			<div class="toggle-box">
-				<div class="toggle-panel toggle-left">
-					<h1>欢迎加入我们!</h1>
-					<p>你还没有账号?</p>
-					<a-button ghost @click="toggleForm" size="large">前往注册</a-button>
+						<a-button
+							type="primary"
+							html-type="submit"
+							class="register-button"
+							block
+						>
+							注册
+						</a-button>
+						<p>或者在社交平台上注册</p>
+					</a-form>
 				</div>
 
-				<div class="toggle-panel toggle-right">
-					<h1>欢迎回来!</h1>
-					<p>已有账户?</p>
-					<a-button ghost @click="toggleForm" size="large">前往登录</a-button>
+				<div class="toggle-box">
+					<div class="toggle-panel toggle-left">
+						<h1>欢迎加入我们!</h1>
+						<p>你还没有账号?</p>
+						<a-button
+							ghost
+							@click="toggleForm"
+							size="large"
+						>
+							前往注册
+						</a-button>
+					</div>
+
+					<div class="toggle-panel toggle-right">
+						<h1>欢迎回来!</h1>
+						<p>已有账户?</p>
+						<a-button
+							ghost
+							@click="toggleForm"
+							size="large"
+						>
+							前往登录
+						</a-button>
+					</div>
 				</div>
 			</div>
-		</div>
+		</transition>
 	</div>
 </template>
 
 <script setup>
-	import { ref, reactive } from 'vue'
-	import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons-vue'
+	import { ref, reactive, onMounted, onBeforeUnmount } from 'vue'
+	import {
+		UserOutlined,
+		LockOutlined,
+		MailOutlined,
+		CloseOutlined,
+	} from '@ant-design/icons-vue'
+	import { useRouter } from 'vue-router'
 
+	const router = useRouter()
 	const isActive = ref(false)
+	const isClosing = ref(false)
+	const isEntering = ref(true)
 	const loginForm = reactive({
 		login_username: '',
 		login_password: '',
@@ -113,22 +184,40 @@
 		register_password: '',
 	})
 
+	onMounted(() => {
+		// 进入动画
+		setTimeout(() => {
+			isEntering.value = false
+		}, 100)
+	})
+
+	onBeforeUnmount(() => {
+		// 退出动画
+		isClosing.value = true
+	})
+
+	const handleClose = async () => {
+		isClosing.value = true
+		await new Promise((resolve) => setTimeout(resolve, 300))
+		router.push('/')
+	}
+
 	const toggleForm = () => {
 		isActive.value = !isActive.value
 	}
 
 	const handleLogin = (values) => {
 		console.log('登录表单提交:', {
-			username: values.login_username,
-			password: values.login_password,
+			login_username: values.login_username,
+			login_password: values.login_password,
 		})
 	}
 
 	const handleRegister = (values) => {
 		console.log('注册表单提交:', {
-			username: values.register_username,
-			email: values.register_email,
-			password: values.register_password,
+			register_username: values.register_username,
+			register_email: values.register_email,
+			register_password: values.register_password,
 		})
 	}
 </script>
@@ -138,7 +227,9 @@
 		margin: 0;
 		padding: 0;
 		box-sizing: border-box;
-		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+		font-family:
+			-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+			sans-serif;
 	}
 
 	.login-page {
@@ -160,6 +251,12 @@
 			0 10px 30px rgba(255, 126, 179, 0.1),
 			0 1px 8px rgba(255, 126, 179, 0.2);
 		overflow: hidden;
+		transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+	}
+
+	.container.entering {
+		opacity: 0;
+		transform: translateY(50px) scale(0.95);
 	}
 
 	.container.active .toggle-box::before {
@@ -276,29 +373,37 @@
 	}
 
 	.custom-form-item {
-		margin-bottom: 32px;
+		margin-bottom: 24px;
 	}
 
 	.custom-form-item :deep(.ant-form-item-control-input) {
 		min-height: auto;
 	}
 
-	.forgot-link {
+	.custom-form-item :deep(.ant-form-item-explain) {
 		text-align: left;
-		margin: 8px 0 0;
+		font-size: 15px;
+		margin-top: 4px;
+		margin-left: 20px;
+		margin-bottom: 10px;
+	}
+
+	.forgot-link {
+		text-align: right;
+		margin: -10px 0 20px;
 	}
 
 	.forgot-link a {
 		color: #ff7eb3;
 		text-decoration: none;
-		font-size: 14px;
+		font-size: 15px;
 		font-weight: 500;
 		transition: all 0.3s ease;
 	}
 
 	.forgot-link a:hover {
 		color: #ff6b9e;
-		text-decoration: underline;
+		/* text-decoration: underline; */
 	}
 
 	.form-box p {
@@ -364,7 +469,7 @@
 		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 	}
 
-	.toggle-panel :deep(.ant-btn) {
+	.toggle-panel .ant-btn {
 		height: 48px;
 		padding: 0 64px;
 		font-size: 16px;
@@ -376,7 +481,7 @@
 		color: #fff;
 	}
 
-	.toggle-panel :deep(.ant-btn:hover) {
+	.toggle-panel .ant-btn:hover {
 		background: rgba(255, 255, 255, 0.2);
 		transform: translateY(-2px);
 		box-shadow: 0 4px 15px rgba(105, 169, 255, 0.3);
@@ -400,6 +505,25 @@
 	.container.active .toggle-panel.toggle-right {
 		right: 0;
 		transition-delay: 1.2s;
+	}
+
+	.close-button {
+		position: absolute;
+		top: 20px;
+		right: 30px;
+		cursor: pointer;
+		z-index: 10;
+	}
+
+	.close-button .anticon {
+		font-size: 24px;
+		color: #ff7eb3;
+		transition: all 0.3s ease;
+	}
+
+	.close-button:hover .anticon {
+		color: #ff6b9e;
+		transform: rotate(90deg);
 	}
 
 	@media screen and (max-width: 650px) {
@@ -454,7 +578,7 @@
 			margin-bottom: 24px;
 		}
 
-		.toggle-panel :deep(.ant-btn) {
+		.toggle-panel .ant-btn {
 			height: 44px;
 			padding: 0 48px;
 			font-size: 15px;
@@ -496,5 +620,26 @@
 		.toggle-panel p {
 			font-size: 14px;
 		}
+	}
+
+	.slide-fade-enter-active,
+	.slide-fade-leave-active {
+		transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.slide-fade-enter-from {
+		opacity: 0;
+		transform: translateY(30px) scale(0.9);
+	}
+
+	.slide-fade-leave-to {
+		opacity: 0;
+		transform: translateY(-30px) scale(0.9);
+	}
+
+	.slide-fade-enter-to,
+	.slide-fade-leave-from {
+		opacity: 1;
+		transform: translateY(0) scale(1);
 	}
 </style>

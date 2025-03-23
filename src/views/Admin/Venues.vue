@@ -1,16 +1,35 @@
 <template>
 	<div class="venues-container">
 		<!-- 搜索区域 -->
-		<a-card class="search-card" :bordered="false">
-			<a-form layout="inline" :model="searchForm">
+		<a-card
+			class="search-card"
+			:bordered="false"
+		>
+			<a-form
+				layout="inline"
+				:model="searchForm"
+			>
 				<a-form-item label="场馆名称">
-					<a-input v-model:value="searchForm.name" placeholder="请输入" allowClear />
+					<a-input
+						v-model:value="searchForm.name"
+						placeholder="请输入"
+						allowClear
+					/>
 				</a-form-item>
 				<a-form-item label="场馆ID">
-					<a-input v-model:value="searchForm.id" placeholder="请输入" allowClear />
+					<a-input
+						v-model:value="searchForm.id"
+						placeholder="请输入"
+						allowClear
+					/>
 				</a-form-item>
 				<a-form-item label="场馆状态">
-					<a-select v-model:value="searchForm.status" placeholder="请选择" allowClear style="width: 120px">
+					<a-select
+						v-model:value="searchForm.status"
+						placeholder="请选择"
+						allowClear
+						style="width: 120px"
+					>
 						<a-select-option value="可用">可用</a-select-option>
 						<a-select-option value="维护中">维护中</a-select-option>
 						<a-select-option value="不可用">不可用</a-select-option>
@@ -18,7 +37,12 @@
 				</a-form-item>
 				<a-form-item>
 					<a-space>
-						<a-button type="primary" @click="handleSearch">查询</a-button>
+						<a-button
+							type="primary"
+							@click="handleSearch"
+						>
+							查询
+						</a-button>
 						<a-button @click="handleReset">重置</a-button>
 					</a-space>
 				</a-form-item>
@@ -28,7 +52,10 @@
 		<!-- 表格区域 -->
 		<a-card class="table-card">
 			<template #extra>
-				<a-button type="primary" @click="handleAdd">
+				<a-button
+					type="primary"
+					@click="handleAdd"
+				>
 					<template #icon><plus-outlined /></template>
 					新增场馆
 				</a-button>
@@ -48,8 +75,19 @@
 					</template>
 					<template v-if="column.key === 'action'">
 						<a-space>
-							<a-button type="primary" @click="handleEdit(record)">修改</a-button>
-							<a-button type="primary" danger @click="handleDelete(record)">删除</a-button>
+							<a-button
+								type="primary"
+								@click="handleEdit(record)"
+							>
+								修改
+							</a-button>
+							<a-button
+								type="primary"
+								danger
+								@click="handleDelete(record)"
+							>
+								删除
+							</a-button>
 						</a-space>
 					</template>
 				</template>

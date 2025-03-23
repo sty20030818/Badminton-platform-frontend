@@ -1,394 +1,686 @@
 <template>
-	<div class="min-h-screen w-full flex items-center justify-center bg-[#f0f2f5] p-4">
-		<div class="container">
-			<!-- 左侧内容 -->
-			<div class="left-side" :class="{ 'slide-out': isRegisterActive }">
-				<div class="content">
-					<h1>Hello, World!</h1>
-					<p>你还没有账号？</p>
-					<button class="action-btn" @click="toggleRegister">前往注册</button>
-				</div>
-			</div>
-
-			<!-- 右侧内容 -->
-			<div class="right-side" :class="{ 'slide-in': isRegisterActive }">
-				<div class="content">
-					<h1>欢迎回来！</h1>
-					<p>已有账号？</p>
-					<button class="action-btn" @click="toggleLogin">立即登录</button>
-				</div>
-			</div>
-
-			<!-- 表单容器 -->
-			<div class="form-container" :class="{ 'slide-left': isRegisterActive }">
-				<!-- 登录表单 -->
-				<form @submit.prevent="handleLogin" class="form" :class="{ hidden: isRegisterActive }">
-					<h2>登录</h2>
-					<div class="input-group">
-						<a-input v-model:value="loginForm.username" placeholder="用户名" size="large">
-							<template #prefix>
-								<UserOutlined style="color: #bfbfbf" />
-							</template>
-						</a-input>
+	<div class="login-page">
+		<transition
+			name="slide-fade"
+			mode="out-in"
+		>
+			<div
+				v-if="!isClosing"
+				class="container"
+				:class="{ active: isActive, entering: isEntering }"
+			>
+				<div class="form-box login">
+					<div
+						class="close-button"
+						@click="handleClose"
+					>
+						<close-outlined />
 					</div>
-					<div class="input-group">
-						<a-input-password v-model:value="loginForm.password" placeholder="密码" size="large">
-							<template #prefix>
-								<LockOutlined style="color: #bfbfbf" />
-							</template>
-						</a-input-password>
-					</div>
-					<div class="forgot-password">
-						<a href="#">忘记密码？</a>
-					</div>
-					<a-button type="primary" html-type="submit" block>登录</a-button>
-					<div class="social-login">
+					<a-form
+						:model="loginForm"
+						@finish="handleLogin"
+					>
+						<h1>登录</h1>
+						<a-form-item
+							name="login_username"
+							:rules="[{ required: true, message: '快点输入用户名!!!!!' }]"
+							class="custom-form-item"
+						>
+							<a-input
+								v-model:value="loginForm.login_username"
+								placeholder="用户名"
+							>
+								<template #prefix>
+									<user-outlined />
+								</template>
+							</a-input>
+						</a-form-item>
+						<a-form-item
+							name="login_password"
+							:rules="[{ required: true, message: '快点输入密码!!!!!' }]"
+							class="custom-form-item"
+						>
+							<a-input-password
+								v-model:value="loginForm.login_password"
+								placeholder="密码"
+							>
+								<template #prefix>
+									<lock-outlined />
+								</template>
+							</a-input-password>
+						</a-form-item>
+						<div class="forgot-link">
+							<a href="#">忘记密码?</a>
+						</div>
+						<a-button
+							type="primary"
+							html-type="submit"
+							class="login-button"
+							block
+						>
+							登录
+						</a-button>
 						<p>或通过社交平台登录</p>
-						<div class="social-icons">
-							<a href="#"><GoogleOutlined /></a>
-							<a href="#"><GithubOutlined /></a>
-							<a href="#"><WechatOutlined /></a>
-						</div>
-					</div>
-				</form>
+					</a-form>
+				</div>
 
-				<!-- 注册表单 -->
-				<form @submit.prevent="handleRegister" class="form" :class="{ show: isRegisterActive }">
-					<h2>注册</h2>
-					<div class="input-group">
-						<a-input v-model:value="registerForm.username" placeholder="用户名" size="large">
-							<template #prefix>
-								<UserOutlined style="color: #bfbfbf" />
-							</template>
-						</a-input>
-					</div>
-					<div class="input-group">
-						<a-input v-model:value="registerForm.email" placeholder="邮箱" size="large">
-							<template #prefix>
-								<MailOutlined style="color: #bfbfbf" />
-							</template>
-						</a-input>
-					</div>
-					<div class="input-group">
-						<a-input-password v-model:value="registerForm.password" placeholder="密码" size="large">
-							<template #prefix>
-								<LockOutlined style="color: #bfbfbf" />
-							</template>
-						</a-input-password>
-					</div>
-					<a-button type="primary" html-type="submit" block>注册</a-button>
-					<div class="social-login">
-						<p>或通过社交平台注册</p>
-						<div class="social-icons">
-							<a href="#"><GoogleOutlined /></a>
-							<a href="#"><GithubOutlined /></a>
-							<a href="#"><WechatOutlined /></a>
+				<div class="form-box register">
+					<a-form
+						:model="registerForm"
+						@finish="handleRegister"
+					>
+						<h1>注册</h1>
+						<a-form-item
+							name="register_username"
+							:rules="[{ required: true, message: '快点输入用户名!!!!!' }]"
+							class="custom-form-item"
+						>
+							<a-input
+								v-model:value="registerForm.register_username"
+								placeholder="用户名"
+							>
+								<template #prefix>
+									<user-outlined />
+								</template>
+							</a-input>
+						</a-form-item>
+						<a-form-item
+							name="register_email"
+							:rules="[
+								{ required: true, message: '快点输入邮箱!!!!!' },
+								{ type: 'email', message: '请输入有效的邮箱地址!!!!!' },
+							]"
+							class="custom-form-item"
+						>
+							<a-input
+								v-model:value="registerForm.register_email"
+								placeholder="邮箱"
+							>
+								<template #prefix>
+									<mail-outlined />
+								</template>
+							</a-input>
+						</a-form-item>
+						<a-form-item
+							name="register_password"
+							:rules="[{ required: true, message: '快点输入密码!!!!!' }]"
+							class="custom-form-item"
+						>
+							<a-input-password
+								v-model:value="registerForm.register_password"
+								placeholder="密码"
+							>
+								<template #prefix>
+									<lock-outlined />
+								</template>
+							</a-input-password>
+						</a-form-item>
+						<div class="forgot-link">
+							<a href="#">忘记密码?</a>
 						</div>
+						<a-button
+							type="primary"
+							html-type="submit"
+							class="register-button"
+							block
+						>
+							注册
+						</a-button>
+						<p>或者在社交平台上注册</p>
+					</a-form>
+				</div>
+
+				<div class="toggle-box">
+					<div class="toggle-panel toggle-left">
+						<h1>欢迎加入我们!</h1>
+						<p>你还没有账号?</p>
+						<a-button
+							ghost
+							@click="toggleForm"
+							size="large"
+						>
+							前往注册
+						</a-button>
 					</div>
-				</form>
+
+					<div class="toggle-panel toggle-right">
+						<h1>欢迎回来!</h1>
+						<p>已有账户?</p>
+						<a-button
+							ghost
+							@click="toggleForm"
+							size="large"
+						>
+							前往登录
+						</a-button>
+					</div>
+				</div>
 			</div>
-		</div>
+		</transition>
 	</div>
 </template>
 
-<script>
-	import { defineComponent } from 'vue'
-	import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons-vue'
+<script setup>
+	import { ref, reactive, onMounted, onBeforeUnmount, getCurrentInstance } from 'vue'
+	import {
+		UserOutlined,
+		LockOutlined,
+		MailOutlined,
+		CloseOutlined,
+	} from '@ant-design/icons-vue'
+	import { useRouter } from 'vue-router'
+	import { useAuthStore } from '@/stores/auth'
+	import { message } from 'ant-design-vue'
 
-	export default defineComponent({
-		name: 'Login',
-		components: {
-			UserOutlined,
-			LockOutlined,
-			MailOutlined,
-		},
-		data() {
-			return {
-				isRegisterActive: false,
-				loginForm: {
-					username: '',
-					password: '',
-				},
-				registerForm: {
-					username: '',
-					email: '',
-					password: '',
-				},
-			}
-		},
-		methods: {
-			toggleRegister() {
-				this.isRegisterActive = true
-			},
-			toggleLogin() {
-				this.isRegisterActive = false
-			},
-			handleLogin(values) {
-				console.log('登录表单提交:', values)
-			},
-			handleRegister(values) {
-				console.log('注册表单提交:', values)
-			},
-		},
+	const { proxy } = getCurrentInstance()
+	const router = useRouter()
+	const authStore = useAuthStore()
+	const isActive = ref(false)
+	const isClosing = ref(false)
+	const isEntering = ref(true)
+	const loginForm = reactive({
+		login_username: '',
+		login_password: '',
 	})
+	const registerForm = reactive({
+		register_username: '',
+		register_email: '',
+		register_password: '',
+	})
+
+	onMounted(() => {
+		// 进入动画
+		setTimeout(() => {
+			isEntering.value = false
+		}, 100)
+	})
+
+	onBeforeUnmount(() => {
+		// 退出动画
+		isClosing.value = true
+	})
+
+	const handleClose = async () => {
+		isClosing.value = true
+		await new Promise((resolve) => setTimeout(resolve, 300))
+		router.push('/')
+	}
+
+	const toggleForm = () => {
+		isActive.value = !isActive.value
+	}
+
+	const handleLogin = async (values) => {
+		try {
+			const params = {
+				login: values.login_username,
+				password: values.login_password,
+			}
+			const { status, message: msg, data, errors } = await proxy.$api.signIn(params)
+			if (status) {
+				// 使用 pinia store 存储 token
+				authStore.setToken(data.token)
+
+				// 获取用户信息
+				const userInfoRes = await proxy.$api.getUser()
+				if (userInfoRes.status) {
+					authStore.setUser(userInfoRes.data)
+				}
+
+				message.success('登录成功')
+				// 跳转到首页
+				handleClose()
+			} else {
+				message.error(errors[0] || msg || '登录失败')
+			}
+		} catch (error) {
+			console.error('登录出错：', error)
+			message.error(error.response.data.errors[0] || '登录失败，请稍后重试')
+		}
+	}
+
+	const handleRegister = async (values) => {
+		try {
+			const params = {
+				username: values.register_username,
+				password: values.register_password,
+				email: values.register_email,
+			}
+			const { status, message: msg, errors } = await proxy.$api.register(params)
+			if (status) {
+				message.success('注册成功')
+				// 跳转到登录
+				toggleForm()
+				loginForm.login_username = values.register_username
+				loginForm.login_password = values.register_password
+			} else {
+				message.error(errors[0] || msg || '注册失败')
+			}
+		} catch (error) {
+			console.error('注册出错：', error)
+			message.error(error.response.data.errors[0] || '注册失败，请稍后重试')
+		}
+	}
 </script>
 
 <style scoped>
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+		font-family:
+			-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+			sans-serif;
+	}
+
+	.login-page {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 100vh;
+		background: linear-gradient(135deg, #fff5f8 0%, #fff 100%);
+		padding: 20px;
+	}
+
 	.container {
 		position: relative;
 		width: 1000px;
 		height: 600px;
-		background: white;
-		border-radius: 20px;
-		box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-		overflow: hidden;
-	}
-
-	.left-side,
-	.right-side {
-		position: absolute;
-		width: 50%;
-		height: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background: #4481eb;
-		transition: transform 0.6s ease-in-out;
-	}
-
-	.left-side {
-		left: 0;
-		background: linear-gradient(45deg, #4481eb, #04befe);
-	}
-
-	.right-side {
-		right: -50%;
-		background: linear-gradient(45deg, #04befe, #4481eb);
-	}
-
-	.content {
-		color: white;
-		text-align: center;
-		padding: 3rem;
-	}
-
-	.content h1 {
-		font-size: 2.5rem;
-		margin-bottom: 1rem;
-		font-weight: 600;
-	}
-
-	.content p {
-		font-size: 1.2rem;
-		margin-bottom: 2rem;
-		opacity: 0.9;
-	}
-
-	.action-btn {
-		padding: 10px 30px;
-		border: 2px solid white;
+		background-color: #fff;
 		border-radius: 30px;
-		color: white;
-		background: transparent;
-		font-size: 1rem;
-		font-weight: 600;
-		cursor: pointer;
-		transition: all 0.3s ease;
+		box-shadow:
+			0 10px 30px rgba(255, 126, 179, 0.1),
+			0 1px 8px rgba(255, 126, 179, 0.2);
+		overflow: hidden;
+		transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 	}
 
-	.action-btn:hover {
-		background: rgba(255, 255, 255, 0.1);
-	}
-
-	.form {
-		display: none;
-		flex-direction: column;
-		align-items: center;
-		width: 100%;
-		position: absolute;
-		top: 0;
-		left: 0;
-		transform: translateX(0);
-		transition: all 0.6s ease-in-out;
-	}
-
-	.form.hidden {
-		transform: translateX(-100%);
+	.container.entering {
 		opacity: 0;
+		transform: translateY(50px) scale(0.95);
 	}
 
-	.form.show {
-		display: flex;
-		transform: translateX(0);
-		opacity: 1;
+	.container.active .toggle-box::before {
+		left: 50%;
 	}
 
-	.form:not(.hidden) {
-		display: flex;
-	}
-
-	h2 {
-		font-size: 2rem;
-		color: #333;
-		margin-bottom: 2rem;
-		font-weight: 600;
-	}
-
-	.input-group {
-		width: 100%;
-		margin-bottom: 1.5rem;
-	}
-
-	.forgot-password {
-		width: 100%;
-		text-align: right;
-		margin-bottom: 1rem;
-	}
-
-	.forgot-password a {
-		color: #666;
-		text-decoration: none;
-		font-size: 0.9rem;
-	}
-
-	.forgot-password a:hover {
-		color: #4481eb;
-	}
-
-	.social-login {
-		margin-top: 2rem;
-		text-align: center;
-	}
-
-	.social-login p {
-		color: #666;
-		margin-bottom: 1rem;
-		font-size: 0.9rem;
-	}
-
-	.social-icons {
-		display: flex;
-		justify-content: center;
-		gap: 1rem;
-	}
-
-	.social-icon {
-		width: 40px;
-		height: 40px;
-		border: 1px solid #ddd;
-		border-radius: 8px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		transition: all 0.3s ease;
-		background: white;
-	}
-
-	.social-icon:hover {
-		border-color: #4481eb;
-		transform: translateY(-2px);
-	}
-
-	.social-icon img {
-		width: 20px;
-		height: 20px;
-	}
-
-	/* 动画类 */
-	.slide-out {
-		transform: translateX(-100%);
-	}
-
-	.slide-in {
-		transform: translateX(-100%);
-	}
-
-	.slide-left {
-		transform: translateX(-100%);
-	}
-
-	.form-container {
+	.form-box {
 		position: absolute;
-		top: 0;
 		right: 0;
 		width: 50%;
 		height: 100%;
-		padding: 3rem;
-		background: white;
-		transition: transform 0.6s ease-in-out;
+		background-color: #fff;
+		display: flex;
+		align-items: center;
+		color: #333;
+		text-align: center;
+		padding: 60px;
+		z-index: 1;
+		transition:
+			0.6s ease-in-out 1.2s,
+			visibility 0s 1s;
+	}
+
+	.container.active .form-box {
+		right: 50%;
+	}
+
+	.form-box.register {
+		visibility: hidden;
+	}
+
+	.container.active .form-box.register {
+		visibility: visible;
+	}
+
+	.form-box :deep(.ant-form) {
+		width: 100%;
+		max-width: 380px;
+		margin: 0 auto;
+	}
+
+	.form-box :deep(.ant-input-affix-wrapper) {
+		height: 50px;
+		border-radius: 12px;
+		border: 2px solid #ffd4e5;
+		transition: all 0.3s ease;
+		background: #fff;
 		overflow: hidden;
 	}
 
-	:deep(.ant-input-affix-wrapper) {
-		background: #f5f5f5;
-		border: none;
-		border-radius: 8px;
-		padding: 8px 12px;
+	.form-box :deep(.anticon) {
+		font-size: 24px;
+		color: #ff7eb3;
+	}
+
+	.form-box :deep(.ant-input-prefix) {
+		margin-right: 16px;
+		margin-left: 8px;
+	}
+
+	.form-box :deep(.ant-input-suffix) {
+		margin-left: 16px;
+		margin-right: 8px;
+	}
+
+	.form-box :deep(.ant-input) {
+		font-size: 15px;
+		background: #fff;
+		padding-left: 4px;
+	}
+
+	.form-box :deep(.ant-input-affix-wrapper:hover) {
+		border-color: #ff7eb3;
+		background: #fff;
+	}
+
+	.form-box :deep(.ant-input-affix-wrapper-focused),
+	.form-box :deep(.ant-input-affix-wrapper:focus) {
+		outline: none;
+		border-right-width: 2px !important;
+		border-color: #ff7eb3 !important;
+		background: #fff !important;
+		box-shadow: 0 0 0 3px rgba(255, 126, 179, 0.1) !important;
+	}
+
+	.form-box :deep(.ant-input-affix-wrapper > input.ant-input) {
+		border-radius: 10px;
+	}
+
+	.form-box :deep(.ant-btn) {
 		height: 45px;
-	}
-
-	:deep(.ant-input) {
-		background: #f5f5f5;
-		font-size: 0.95rem;
-	}
-
-	:deep(.ant-input-affix-wrapper:hover) {
-		background: #f0f0f0;
-	}
-
-	:deep(.ant-input-affix-wrapper-focused) {
-		box-shadow: none !important;
-		background: #f0f0f0;
-	}
-
-	:deep(.ant-btn-primary) {
-		background: #4481eb;
+		border-radius: 12px;
+		font-size: 16px;
+		font-weight: 500;
+		background: linear-gradient(45deg, #ff7eb3, #ff6b9e);
 		border: none;
-		height: 45px;
-		font-weight: 600;
-		border-radius: 8px;
-		font-size: 1rem;
-		box-shadow: 0 2px 4px rgba(68, 129, 235, 0.2);
+		box-shadow: 0 4px 15px rgba(255, 126, 179, 0.25);
+		transition: all 0.3s ease;
 	}
 
-	:deep(.ant-btn-primary:hover) {
-		background: #3461b5;
-		box-shadow: 0 4px 8px rgba(68, 129, 235, 0.3);
+	.form-box :deep(.ant-btn:hover) {
+		background: linear-gradient(45deg, #ff6b9e, #ff5a93);
+		transform: translateY(-2px);
+		box-shadow: 0 6px 20px rgba(255, 126, 179, 0.35);
 	}
 
-	@media (max-width: 768px) {
+	.form-box h1 {
+		font-size: 36px;
+		background: linear-gradient(45deg, #ff7eb3, #ff6b9e);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		margin: 0 0 40px;
+		font-weight: 700;
+	}
+
+	.custom-form-item {
+		margin-bottom: 24px;
+	}
+
+	.custom-form-item :deep(.ant-form-item-control-input) {
+		min-height: auto;
+	}
+
+	.custom-form-item :deep(.ant-form-item-explain) {
+		text-align: left;
+		font-size: 15px;
+		margin-top: 4px;
+		margin-left: 20px;
+		margin-bottom: 10px;
+	}
+
+	.forgot-link {
+		text-align: right;
+		margin: -10px 0 20px;
+	}
+
+	.forgot-link a {
+		color: #ff7eb3;
+		text-decoration: none;
+		font-size: 15px;
+		font-weight: 500;
+		transition: all 0.3s ease;
+	}
+
+	.forgot-link a:hover {
+		color: #ff6b9e;
+		/* text-decoration: underline; */
+	}
+
+	.form-box p {
+		margin: 24px 0;
+		color: #666;
+		font-size: 14px;
+	}
+
+	.toggle-box {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+	}
+
+	.toggle-box::before {
+		content: '';
+		position: absolute;
+		left: -250%;
+		width: 300%;
+		height: 100%;
+		background: linear-gradient(45deg, #69a9ff, #4a90e2);
+		z-index: 2;
+		border-radius: 150px;
+		transition: 1.8s ease-in-out;
+	}
+
+	.container.active .toggle-box::before {
+		left: 50%;
+	}
+
+	.toggle-panel {
+		position: absolute;
+		width: 50%;
+		height: 100%;
+		color: #fff;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		z-index: 2;
+		transition: 0.6s ease-in-out;
+		padding: 0 60px;
+		background: transparent;
+	}
+
+	.toggle-panel h1 {
+		font-size: 38px;
+		margin-bottom: 20px;
+		font-weight: 700;
+		color: #fff;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		letter-spacing: -0.5px;
+		background: none;
+		-webkit-background-clip: initial;
+		-webkit-text-fill-color: initial;
+	}
+
+	.toggle-panel p {
+		font-size: 18px;
+		margin-bottom: 32px;
+		font-weight: 400;
+		line-height: 1.6;
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+	}
+
+	.toggle-panel .ant-btn {
+		height: 48px;
+		padding: 0 64px;
+		font-size: 16px;
+		font-weight: 500;
+		border: 2px solid rgba(255, 255, 255, 0.9);
+		border-radius: 12px;
+		background: transparent;
+		transition: all 0.3s ease;
+		color: #fff;
+	}
+
+	.toggle-panel .ant-btn:hover {
+		background: rgba(255, 255, 255, 0.2);
+		transform: translateY(-2px);
+		box-shadow: 0 4px 15px rgba(105, 169, 255, 0.3);
+	}
+
+	.toggle-panel.toggle-left {
+		left: 0;
+		transition-delay: 1.2s;
+	}
+
+	.container.active .toggle-panel.toggle-left {
+		left: -50%;
+		transition-delay: 0.6s;
+	}
+
+	.toggle-panel.toggle-right {
+		right: -50%;
+		transition-delay: 0.6s;
+	}
+
+	.container.active .toggle-panel.toggle-right {
+		right: 0;
+		transition-delay: 1.2s;
+	}
+
+	.close-button {
+		position: absolute;
+		top: 20px;
+		right: 30px;
+		cursor: pointer;
+		z-index: 10;
+	}
+
+	.close-button .anticon {
+		font-size: 24px;
+		color: #ff7eb3;
+		transition: all 0.3s ease;
+	}
+
+	.close-button:hover .anticon {
+		color: #ff6b9e;
+		transform: rotate(90deg);
+	}
+
+	@media screen and (max-width: 650px) {
 		.container {
+			height: calc(100vh - 40px);
+			border-radius: 20px;
+		}
+
+		.form-box {
+			bottom: 0;
 			width: 100%;
-			height: auto;
-			min-height: 100vh;
-			border-radius: 0;
+			height: 70%;
+			padding: 40px 24px;
 		}
 
-		.left-side,
-		.right-side {
+		.form-box :deep(.ant-form) {
+			max-width: 100%;
+		}
+
+		.container.active .form-box {
+			right: 0;
+			bottom: 30%;
+		}
+
+		.toggle-box::before {
+			left: 0;
 			width: 100%;
-			height: 200px;
+			top: -270%;
+			height: 300%;
+			border-radius: 20vw;
+			background: linear-gradient(180deg, #69a9ff, #4a90e2);
 		}
 
-		.form-container {
+		.container.active .toggle-box::before {
+			left: 0;
+			top: 70%;
+		}
+
+		.toggle-panel {
 			width: 100%;
-			padding: 2rem;
+			height: 30%;
+			padding: 24px;
 		}
 
-		.slide-left {
-			transform: translateY(-200px);
+		.toggle-panel h1 {
+			font-size: 32px;
+			margin-bottom: 12px;
 		}
 
-		.form {
-			position: relative;
+		.toggle-panel p {
+			font-size: 16px;
+			margin-bottom: 24px;
 		}
 
-		.form.hidden {
-			transform: translateY(-100%);
+		.toggle-panel .ant-btn {
+			height: 44px;
+			padding: 0 48px;
+			font-size: 15px;
 		}
 
-		.form.show {
-			transform: translateY(0);
+		.toggle-panel.toggle-left {
+			top: 0;
 		}
+
+		.container.active .toggle-panel.toggle-left {
+			left: 0;
+			top: -30%;
+		}
+
+		.toggle-panel.toggle-right {
+			right: 0;
+			bottom: -30%;
+		}
+
+		.container.active .toggle-panel.toggle-right {
+			bottom: 0;
+		}
+	}
+
+	@media screen and (max-width: 400px) {
+		.form-box {
+			padding: 24px 16px;
+		}
+
+		.container h1 {
+			font-size: 28px;
+			margin: 0 0 32px;
+		}
+
+		.toggle-panel h1 {
+			font-size: 28px;
+		}
+
+		.toggle-panel p {
+			font-size: 14px;
+		}
+	}
+
+	.slide-fade-enter-active,
+	.slide-fade-leave-active {
+		transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.slide-fade-enter-from {
+		opacity: 0;
+		transform: translateY(30px) scale(0.9);
+	}
+
+	.slide-fade-leave-to {
+		opacity: 0;
+		transform: translateY(-30px) scale(0.9);
+	}
+
+	.slide-fade-enter-to,
+	.slide-fade-leave-from {
+		opacity: 1;
+		transform: translateY(0) scale(1);
 	}
 </style>

@@ -14,9 +14,9 @@
 </template>
 
 <script setup>
-	import AdminSider from '@/components/Admin/AdminSider.vue'
-	import AdminHeader from '@/components/Admin/AdminHeader.vue'
-	import AdminFooter from '@/components/Admin/AdminFooter.vue'
+	import AdminSider from '@/layout/Admin/AdminSider.vue'
+	import AdminHeader from '@/layout/Admin/AdminHeader.vue'
+	import AdminFooter from '@/layout/Admin/AdminFooter.vue'
 	import { RouterView } from 'vue-router'
 </script>
 

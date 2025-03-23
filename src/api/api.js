@@ -1,14 +1,18 @@
 /**
  * API 统一出口
  */
-import userApi from './modules/admin/user'
-import eventApi from './modules/admin/event'
-import venueApi from './modules/admin/venue'
-import homeApi from './modules/admin/home'
+import adminUserApi from './modules/admin/user'
+import adminEventApi from './modules/admin/event'
+import adminVenueApi from './modules/admin/venue'
+import adminHomeApi from './modules/admin/home'
+import authApi from './modules/auth'
+import userApi from './modules/user'
 
 export default {
+	...adminUserApi,
+	...adminEventApi,
+	...adminVenueApi,
+	...adminHomeApi,
+	...authApi,
 	...userApi,
-	...eventApi,
-	...venueApi,
-	...homeApi,
 }
