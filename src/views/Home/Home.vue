@@ -1,7 +1,5 @@
 <template>
-	<div class="min-h-screen relative overflow-hidden">
-		<!-- 导航栏 -->
-		<Header />
+	<div>
 		<!-- 背景装饰 -->
 		<div class="absolute inset-0 overflow-hidden pointer-events-none">
 			<div
@@ -29,6 +27,7 @@
 						class="explore-btn"
 						shape="round"
 						size="large"
+						@click="goToEvent"
 					>
 						立即体验
 					</a-button>
@@ -88,9 +87,26 @@
 
 <script setup>
 	import { useRouter } from 'vue-router'
-	import Header from '@/layout/Header.vue'
+	import { useAllDataStore } from '@/stores'
 
 	const router = useRouter()
+	const store = useAllDataStore()
+
+	// 页面加载时获取数据和设置当前页面
+	onMounted(() => {
+		store.state.currentPage = 'home'
+		// console.log('当前页面已设置为:', store.state.currentPage)
+	})
+
+	// 组件卸载时清除当前页面
+	onUnmounted(() => {
+		store.state.currentPage = ''
+		// console.log('当前页面已清除')
+	})
+
+	const goToEvent = () => {
+		router.push('/event')
+	}
 </script>
 
 <style scoped>

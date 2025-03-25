@@ -72,49 +72,54 @@
 						</a-menu-item>
 						<a-menu-divider />
 
-						<a-menu-item>
-							<a
-								target="_blank"
-								rel="noopener noreferrer"
-								href="/"
-							>
+						<a-menu-item
+							key="personal"
+							@click="handlePersonal"
+						>
+							<div class="flex items-center gap-2">
 								<UserOutlined />
-								个人中心
-							</a>
+								<span>个人中心</span>
+							</div>
 						</a-menu-item>
 						<a-menu-divider />
 
-						<a-menu-item>
-							<a
-								target="_blank"
-								rel="noopener noreferrer"
-								href="/"
-							>
-								<read-outlined />
-								文档
-							</a>
+						<a-menu-item
+							key="home"
+							@click="handleHome"
+						>
+							<div class="flex items-center gap-2">
+								<HomeOutlined />
+								<span>首页</span>
+							</div>
 						</a-menu-item>
-						<a-menu-item>
-							<a
-								target="_blank"
-								rel="noopener noreferrer"
-								href="/"
-							>
-								<github-outlined />
-								Github
-							</a>
+						<a-menu-item
+							key="document"
+							@click="handleDocument"
+						>
+							<div class="flex items-center gap-2">
+								<ReadOutlined />
+								<span>文档</span>
+							</div>
+						</a-menu-item>
+						<a-menu-item
+							key="github"
+							@click="handleGithub"
+						>
+							<div class="flex items-center gap-2">
+								<GithubOutlined />
+								<span>Github</span>
+							</div>
 						</a-menu-item>
 						<a-menu-divider />
 
-						<a-menu-item>
-							<a
-								target="_blank"
-								rel="noopener noreferrer"
-								href="/"
-							>
+						<a-menu-item
+							key="logout"
+							@click="handleLogout"
+						>
+							<div class="flex items-center gap-2">
 								<LogoutOutlined />
-								退出登录
-							</a>
+								<span>退出登录</span>
+							</div>
 						</a-menu-item>
 					</a-menu>
 				</template>
@@ -135,8 +140,14 @@
 		LogoutOutlined,
 		HomeOutlined,
 	} from '@ant-design/icons-vue'
+	import { useRouter } from 'vue-router'
+	import { useAuthStore } from '@/stores/auth'
+	import { message } from 'ant-design-vue'
 
 	const store = useAllDataStore()
+	const router = useRouter()
+	const authStore = useAuthStore()
+
 	const toggleCollapse = () => {
 		store.state.isCollapse = !store.state.isCollapse
 	}
@@ -144,8 +155,32 @@
 		window.location.reload()
 	}
 	const getImageUrl = (user) => {
-		return new URL(`../../assets/images/avatars/${user}.jpg`, import.meta.url).href
+		return new URL(`../../assets/images/avatars/${user}.png`, import.meta.url).href
 	}
+
+	const handlePersonal = () => {
+		router.push('/personal')
+	}
+
+	const handleDocument = () => {
+		window.open('https://www.baidu.com', '_blank')
+	}
+
+	const handleGithub = () => {
+		window.open('https://www.baidu.com', '_blank')
+	}
+
+	const handleHome = () => {
+		router.push('/')
+	}
+
+	const handleLogout = () => {
+		authStore.clearToken()
+		message.success('已退出登录')
+		// router.push('/login')
+		router.push('/')
+	}
+
 	const basePath = ''
 	const routes = ref([
 		{

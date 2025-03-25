@@ -1,10 +1,10 @@
 <template>
-	<div class="admin-layout">
-		<a-layout class="lay-container">
+	<div class="w-full h-screen">
+		<a-layout class="h-full">
 			<AdminSider />
-			<a-layout>
+			<a-layout class="bg-white">
 				<AdminHeader />
-				<a-layout-content class="ant-content">
+				<a-layout-content>
 					<RouterView />
 				</a-layout-content>
 				<AdminFooter />
@@ -20,9 +20,4 @@
 	import { RouterView } from 'vue-router'
 </script>
 
-<style scoped>
-	.admin-layout,
-	.lay-container {
-		height: 100%;
-	}
-</style>
+<style scoped></style>

@@ -1,48 +1,78 @@
 <template>
-	<a-layout-header
-		class="flex justify-between items-center px-16 py-5 bg-transparent h-20"
-	>
-		<div class="flex items-center gap-2.5">
+	<a-layout-header class="layoutHeader flex justify-between items-center px-16 py-5 h-20">
+		<router-link
+			to="/"
+			class="flex items-center gap-2.5 cursor-pointer"
+		>
 			<img
 				src="@/assets/images/logo.png"
 				alt="Badminton"
 				class="h-10"
 			/>
 			<span class="text-2xl font-bold text-blue-500">羽你同乐</span>
-		</div>
-		<div class="flex justify-center items-center gap-10">
-			<a
-				href="#"
-				class="nav-item"
+			<!-- <span
+				v-if="store.state.currentPage"
+				class="text-lg text-gray-500 ml-4"
 			>
-				活动预约
-			</a>
-			<a
-				href="#"
-				class="nav-item"
-			>
-				场地预约
-			</a>
-			<a
-				href="#"
-				class="nav-item"
-			>
-				赛事活动
-			</a>
-			<a
-				href="#"
-				class="nav-item"
-			>
-				关于我们
-			</a>
-		</div>
+				• {{ store.state.currentPage }}
+			</span> -->
+		</router-link>
+		<nav class="flex-1 flex justify-center items-center">
+			<div class="flex items-center gap-12">
+				<router-link
+					to="/"
+					class="nav-item"
+					:class="{
+						'text-pink-500 !font-bold !text-2xl': store.state.currentPage === 'home',
+					}"
+				>
+					首页
+				</router-link>
+				<router-link
+					to="/event"
+					class="nav-item"
+					:class="{
+						'text-pink-500 !font-bold !text-2xl': store.state.currentPage === 'event',
+					}"
+				>
+					活动预约
+				</router-link>
+				<router-link
+					to="/venue"
+					class="nav-item"
+					:class="{
+						'text-pink-500 !font-bold !text-2xl': store.state.currentPage === 'venue',
+					}"
+				>
+					场地预约
+				</router-link>
+				<router-link
+					to="/race"
+					class="nav-item"
+					:class="{
+						'text-pink-500 !font-bold !text-2xl': store.state.currentPage === 'race',
+					}"
+				>
+					赛事活动
+				</router-link>
+				<router-link
+					to="/about"
+					class="nav-item"
+					:class="{
+						'text-pink-500 !font-bold !text-2xl': store.state.currentPage === 'about',
+					}"
+				>
+					关于我们
+				</router-link>
+			</div>
+		</nav>
 
 		<div class="mr-20">
 			<template v-if="authStore.isAuthenticated">
 				<a-dropdown>
 					<div class="flex items-center gap-3 cursor-pointer">
 						<span class="text-lg font-medium text-gray-500 mr-4">
-							你好 , {{ userInfo?.user?.username }}
+							你好 , {{ userInfo?.user?.nickname }}
 						</span>
 						<a-avatar
 							:size="52"
@@ -62,7 +92,7 @@
 										direction="vertical"
 										style="gap: 0"
 									>
-										<p>{{ userInfo?.user?.username }}</p>
+										<p>{{ userInfo?.user?.nickname }} - {{ userInfo?.user?.username }}</p>
 										<p style="color: #a4b0be">{{ userInfo?.user?.email }}</p>
 									</a-space>
 								</a-space>
@@ -79,11 +109,11 @@
 							<a-menu-divider />
 
 							<a-menu-item
-								key="document"
-								@click="handleDocument"
+								key="admin"
+								@click="handleAdmin"
 							>
-								<ReadOutlined />
-								<span class="ml-2">文档</span>
+								<DashboardOutlined />
+								<span class="ml-2">管理后台</span>
 							</a-menu-item>
 							<a-menu-item
 								key="github"
@@ -140,20 +170,31 @@
 </template>
 
 <script setup>
-	import { computed } from 'vue'
+	import { computed, watch } from 'vue'
 	import { useRouter } from 'vue-router'
 	import { useAuthStore } from '@/stores/auth'
+	import { useAllDataStore } from '@/stores'
 	import {
 		UserOutlined,
 		LogoutOutlined,
 		GithubOutlined,
-		ReadOutlined,
+		DashboardOutlined,
 	} from '@ant-design/icons-vue'
 	import { message } from 'ant-design-vue'
 
 	const router = useRouter()
 	const authStore = useAuthStore()
+	const store = useAllDataStore()
 	const userInfo = computed(() => authStore.getUser())
+
+	//* 监听当前页面的变化
+	// watch(
+	// 	() => store.state.currentPage,
+	// 	(newPage) => {
+	// 		console.log('Header 检测到页面变化:', newPage)
+	// 	},
+	// 	{ immediate: true },
+	// )
 
 	const getImageUrl = (user) => {
 		return new URL(`../assets/images/avatars/${user}.png`, import.meta.url).href
@@ -167,8 +208,8 @@
 		router.push('/personal')
 	}
 
-	const handleDocument = () => {
-		window.open('https://www.baidu.com', '_blank')
+	const handleAdmin = () => {
+		router.push('/admin')
 	}
 
 	const handleGithub = () => {
@@ -192,8 +233,9 @@
 		transition: color 0.3s;
 	}
 
-	.nav-item:hover {
-		color: #ff7eb3;
+	.nav-item:hover,
+	.nav-item.text-pink-500 {
+		color: #ff7eb3 !important;
 	}
 
 	.register-btn {
@@ -210,21 +252,16 @@
 		background: #ff6b9e;
 	}
 
+	:deep(.ant-layout-header) {
+		padding: 0;
+	}
+
 	:deep(.ant-avatar) {
-		/* background: #ff7eb3; */
 		transition: transform 0.3s ease;
 	}
 
 	:deep(.ant-dropdown-trigger:hover .ant-avatar) {
 		transform: scale(1.15);
-	}
-
-	:deep(.ant-menu-item) {
-		/* padding: 12px 20px; */
-	}
-
-	:deep(.ant-menu-item .anticon) {
-		margin-right: 10px;
 	}
 
 	:deep(.ant-menu-item:hover) {

@@ -1,10 +1,10 @@
-import request from '../request'
+import request from '../../request'
 
 export default {
 	// 登录
-	signIn(data) {
+	login(data) {
 		return request({
-			url: '/auth/sign_in',
+			url: '/auth/login',
 			method: 'post',
 			data,
 			mock: false,

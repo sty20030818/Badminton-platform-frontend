@@ -161,7 +161,7 @@
 </template>
 
 <script setup>
-	import { ref, reactive, onMounted, onBeforeUnmount } from 'vue'
+	import { ref, reactive, onMounted, onBeforeUnmount, getCurrentInstance } from 'vue'
 	import {
 		UserOutlined,
 		LockOutlined,
@@ -169,8 +169,12 @@
 		CloseOutlined,
 	} from '@ant-design/icons-vue'
 	import { useRouter } from 'vue-router'
+	import { useAuthStore } from '@/stores/auth'
+	import { message } from 'ant-design-vue'
 
+	const { proxy } = getCurrentInstance()
 	const router = useRouter()
+	const authStore = useAuthStore()
 	const isActive = ref(false)
 	const isClosing = ref(false)
 	const isEntering = ref(true)
@@ -206,19 +210,56 @@
 		isActive.value = !isActive.value
 	}
 
-	const handleLogin = (values) => {
-		console.log('登录表单提交:', {
-			login_username: values.login_username,
-			login_password: values.login_password,
-		})
+	const handleLogin = async (values) => {
+		try {
+			const params = {
+				login: values.login_username,
+				password: values.login_password,
+			}
+			const { status, message: msg, data, errors } = await proxy.$api.login(params)
+			if (status) {
+				// 使用 pinia store 存储 token
+				authStore.setToken(data.token)
+
+				// 获取用户信息
+				const userInfoRes = await proxy.$api.getUser()
+				if (userInfoRes.status) {
+					authStore.setUser(userInfoRes.data)
+				}
+
+				message.success('登录成功')
+				// 跳转到首页
+				handleClose()
+			} else {
+				message.error(errors?.[0] || msg || '登录失败')
+			}
+		} catch (error) {
+			console.error('登录出错：', error)
+			message.error(error.response.data.errors?.[0] || '登录失败，请稍后重试')
+		}
 	}
 
-	const handleRegister = (values) => {
-		console.log('注册表单提交:', {
-			register_username: values.register_username,
-			register_email: values.register_email,
-			register_password: values.register_password,
-		})
+	const handleRegister = async (values) => {
+		try {
+			const params = {
+				username: values.register_username,
+				password: values.register_password,
+				email: values.register_email,
+			}
+			const { status, message: msg, errors } = await proxy.$api.register(params)
+			if (status) {
+				message.success('注册成功')
+				// 跳转到登录
+				toggleForm()
+				loginForm.login_username = values.register_username
+				loginForm.login_password = values.register_password
+			} else {
+				message.error(errors?.[0] || msg || '注册失败')
+			}
+		} catch (error) {
+			console.error('注册出错：', error)
+			message.error(error.response.data.errors?.[0] || '注册失败，请稍后重试')
+		}
 	}
 </script>
 

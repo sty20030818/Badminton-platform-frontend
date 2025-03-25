@@ -66,6 +66,12 @@
 							{{ text }}
 						</a-tag>
 					</template>
+					<template v-if="column.key === 'avatar'">
+						<a-avatar
+							:size="40"
+							:src="getImageUrl(record.avatar)"
+						/>
+					</template>
 					<template v-if="column.key === 'gender'">
 						<a-tag :color="genderColorMap[text]">{{ text }}</a-tag>
 					</template>
@@ -133,6 +139,11 @@
 			dataIndex: 'id',
 			key: 'id',
 			width: 80,
+		},
+		{
+			title: '头像',
+			dataIndex: 'avatar',
+			key: 'avatar',
 		},
 		{
 			title: '用户名',
@@ -230,6 +241,10 @@
 		} finally {
 			loading.value = false
 		}
+	}
+
+	const getImageUrl = (user) => {
+		return new URL(`../../assets/images/avatars/${user}.png`, import.meta.url).href
 	}
 
 	// 搜索方法

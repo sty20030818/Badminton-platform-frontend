@@ -62,7 +62,7 @@
 </template>
 
 <script setup>
-	import { ref, getCurrentInstance, onMounted } from 'vue'
+	import { ref } from 'vue'
 	import vue from '@/assets/images/adminHome/vue.png'
 	import vueRouter from '@/assets/images/adminHome/vueRouter.svg'
 	import vite from '@/assets/images/adminHome/vite.svg'
@@ -135,10 +135,10 @@
 	])
 
 	const getImageUrl = (user) => {
-		return new URL(`../../assets/images/avatars/${user}.jpg`, import.meta.url).href
+		return new URL(`../../assets/images/avatars/${user}.png`, import.meta.url).href
 	}
 
-	// 请求tabledata数据的方法
+	//* 请求tabledata数据的方法
 	// const getTableData=async ()=>{
 	//     const data = await proxy.$api.getTableData()
 	//     tableData.value=data.tableData
