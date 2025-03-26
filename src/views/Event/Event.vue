@@ -20,7 +20,7 @@
 						</div>
 						<div class="flex items-center space-x-2 text-gray-500 text-sm">
 							<team-outlined />
-							<span>{{ event.capacity }}</span>
+							<span>{{ getTotalParticipants(event) }}/{{ event.capacity }}人</span>
 						</div>
 					</div>
 
@@ -151,6 +151,14 @@
 	const store = useAllDataStore()
 	const events = ref([])
 	const loading = ref(false)
+
+	// 计算活动的参与人数
+	const getTotalParticipants = (event) => {
+		if (!event.groups) return 0
+		return event.groups.reduce((total, group) => {
+			return total + (group.members?.length || 0)
+		}, 0)
+	}
 
 	// 获取活动列表
 	const fetchEvents = async () => {

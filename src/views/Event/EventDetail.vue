@@ -27,7 +27,7 @@
 							</span>
 							<span class="flex items-center gap-1">
 								<TeamOutlined />
-								{{ eventData.participants || 0 }}人已报名
+								{{ totalParticipants }}人已报名
 							</span>
 						</div>
 					</div>
@@ -77,6 +77,54 @@
 							<h2 class="text-xl font-bold mb-3">活动详情</h2>
 							<div class="text-gray-600 space-y-2">
 								<p>{{ eventData.description }}</p>
+								<div class="mt-4 grid grid-cols-2 gap-4">
+									<div class="flex items-center gap-2">
+										<UserOutlined />
+										<span>
+											已报名：{{ totalParticipants }}/{{ eventData.capacity }}人
+										</span>
+									</div>
+									<div class="flex items-center gap-2">
+										<WalletOutlined />
+										<span>
+											活动费用：{{
+												eventData.feeType === '免费' ? '免费' : `￥${eventData.feeAmount}`
+											}}
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- 分组信息 -->
+						<div v-if="eventData.groups && eventData.groups.length > 0">
+							<h2 class="text-xl font-bold mb-3">活动分组</h2>
+							<div class="space-y-4">
+								<div
+									v-for="group in eventData.groups"
+									:key="group.id"
+									class="border rounded-lg p-4"
+								>
+									<div class="flex justify-between items-start mb-2">
+										<h3 class="text-lg font-medium">{{ group.name }}</h3>
+										<a-tag color="blue">
+											已报名 {{ group.members.length }}/{{ group.capacity }}人
+										</a-tag>
+									</div>
+									<p class="text-gray-600 mb-3">{{ group.description }}</p>
+									<div class="flex flex-wrap gap-2">
+										<div
+											v-for="member in group.members"
+											:key="member.id"
+											class="flex items-center gap-1"
+										>
+											<a-avatar :src="getAvatarImageUrl(member.avatar)">
+												{{ member.nickname[0] }}
+											</a-avatar>
+											<span class="text-sm">{{ member.nickname }}</span>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 
@@ -90,6 +138,7 @@
 								<div>
 									<p class="font-medium">{{ eventData.creator?.nickname }}</p>
 									<p class="text-sm text-gray-500">{{ eventData.creator?.introduce }}</p>
+									<!-- <p class="text-sm text-gray-500">{{ eventData.creator?.email }}</p> -->
 								</div>
 							</div>
 						</div>
@@ -106,6 +155,8 @@
 		ClockCircleOutlined,
 		TeamOutlined,
 		EnvironmentOutlined,
+		UserOutlined,
+		WalletOutlined,
 	} from '@ant-design/icons-vue'
 	import { ref, onMounted, computed } from 'vue'
 	import { useRoute } from 'vue-router'
@@ -117,6 +168,14 @@
 	const eventId = route.params.id
 	const eventData = ref({})
 	const loading = ref(true)
+
+	// 计算总参与人数
+	const totalParticipants = computed(() => {
+		if (!eventData.value.groups) return 0
+		return eventData.value.groups.reduce((total, group) => {
+			return total + (group.members?.length || 0)
+		}, 0)
+	})
 
 	// 获取活动详情
 	const fetchEventDetail = async () => {
