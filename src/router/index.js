@@ -22,6 +22,12 @@ const routes = [
 				meta: { title: '羽你同乐 • 活动' },
 			},
 			{
+				path: 'event/create',
+				name: 'EventCreate',
+				component: () => import('@/views/Event/EventCreate.vue'),
+				meta: { title: '羽你同乐 • 创建活动' },
+			},
+			{
 				path: 'event/:id',
 				name: 'EventDetail',
 				component: () => import('@/views/Event/EventDetail.vue'),

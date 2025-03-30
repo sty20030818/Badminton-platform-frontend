@@ -50,7 +50,7 @@
 							type="primary"
 							size="large"
 							class="register-btn"
-							:disabled="isDeadlinePassed"
+							:disabled="isDeadlinePassed || !selectedGroup"
 							@click="handleRegister"
 						>
 							{{ getRegisterButtonText() }}
@@ -103,10 +103,26 @@
 								<div
 									v-for="group in eventData.groups"
 									:key="group.id"
-									class="border rounded-lg p-4"
+									class="border rounded-lg p-4 transition-all duration-200"
+									:class="{
+										'border-pink-500 bg-pink-50': selectedGroup?.id === group.id,
+										'border-gray-200 hover:border-pink-300':
+											selectedGroup?.id !== group.id && !isDeadlinePassed,
+										'cursor-pointer': !isDeadlinePassed,
+										'opacity-70': isDeadlinePassed,
+									}"
+									@click="!isDeadlinePassed && selectGroup(group)"
 								>
 									<div class="flex justify-between items-start mb-2">
-										<h3 class="text-lg font-medium">{{ group.name }}</h3>
+										<div class="flex items-center gap-2">
+											<h3 class="text-lg font-medium">{{ group.name }}</h3>
+											<a-tag
+												v-if="selectedGroup?.id === group.id"
+												color="pink"
+											>
+												已选择
+											</a-tag>
+										</div>
 										<a-tag color="blue">
 											已报名 {{ group.members.length }}/{{ group.capacity }}人
 										</a-tag>
@@ -168,6 +184,7 @@
 	const eventId = route.params.id
 	const eventData = ref({})
 	const loading = ref(true)
+	const selectedGroup = ref(null)
 
 	// 计算总参与人数
 	const totalParticipants = computed(() => {
@@ -194,13 +211,27 @@
 		}
 	}
 
+	// 选择组
+	const selectGroup = (group) => {
+		if (isDeadlinePassed.value) {
+			message.warning('报名已截止')
+			return
+		}
+		if (group.members.length >= group.capacity) {
+			message.warning('该组已满，请选择其他组')
+			return
+		}
+		selectedGroup.value = group
+	}
+
 	// 处理报名
 	const handleRegister = async () => {
-		if (isDeadlinePassed.value) return
+		if (isDeadlinePassed.value || !selectedGroup.value) return
 		try {
-			const res = await eventApi.joinEvent(eventId)
+			const res = await eventApi.joinEvent(eventId, selectedGroup.value.id)
 			if (res.code === 200) {
 				message.success('报名成功！')
+				selectedGroup.value = null
 				await fetchEventDetail()
 			}
 		} catch (error) {
@@ -224,7 +255,7 @@
 
 	// 判断是否已过报名截止时间
 	const isDeadlinePassed = computed(() => {
-		return dayjs().isAfter(dayjs(eventData.value.registrationDeadline))
+		return dayjs().isAfter(dayjs(eventData.value.regEnd))
 	})
 
 	// 获取难度文本和颜色
@@ -253,6 +284,9 @@
 	const getRegisterButtonText = () => {
 		if (isDeadlinePassed.value) {
 			return '报名已截止'
+		}
+		if (!selectedGroup.value) {
+			return '请选择分组'
 		}
 		return '立即报名'
 	}

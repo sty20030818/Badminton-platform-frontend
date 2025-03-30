@@ -20,6 +20,16 @@ export default {
 		})
 	},
 
+	//创建活动
+	createEvent(data) {
+		return request({
+			url: '/events',
+			method: 'post',
+			data,
+			mock: false,
+		})
+	},
+
 	// 报名参加活动
 	joinEvent(id) {
 		return request({
