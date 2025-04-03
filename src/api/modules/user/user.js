@@ -18,6 +18,17 @@ export default {
 			mock: false,
 		})
 	},
+
+	// 更新当前用户密码
+	updatePassword(data) {
+		return request({
+			url: '/user/me/password',
+			method: 'put',
+			data,
+			mock: false,
+		})
+	},
+
 	// 删除当前用户
 	deleteUser() {
 		return request({

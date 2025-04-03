@@ -3,71 +3,109 @@
 		<div class="container mx-auto px-4 py-8 max-w-[2000px]">
 			<!-- 搜索和排序区域 -->
 			<div
-				class="flex flex-col md:flex-row justify-between items-center mb-8 space-y-4 md:space-y-0"
+				class="flex flex-col md:flex-row justify-between items-center mb-8 space-y-4 md:space-y-0 md:space-x-6"
 			>
 				<!-- 搜索框 -->
-				<div class="w-full md:w-96">
-					<a-input-search
-						v-model:value="searchQuery.title"
-						placeholder="搜索活动标题"
-						enter-button
-						:loading="loading"
-						@search="handleSearch"
-						@pressEnter="handleSearch"
-						class="w-full"
-					/>
+				<div class="w-full md:w-[400px]">
+					<a-tooltip
+						placement="topLeft"
+						title="输入活动标题关键词搜索"
+					>
+						<div class="search-wrapper">
+							<a-input
+								v-model:value="searchQuery.title"
+								placeholder="搜索活动标题"
+								class="custom-search-input"
+								@pressEnter="handleSearch"
+							/>
+							<a-button
+								type="primary"
+								:loading="loading"
+								class="custom-search-button"
+								@click="handleSearch"
+							>
+								<div class="icon-wrapper">
+									<search-outlined />
+								</div>
+							</a-button>
+						</div>
+					</a-tooltip>
 				</div>
 
 				<!-- 排序和筛选按钮 -->
-				<div class="flex items-center space-x-4">
-					<a-select
-						v-model:value="searchQuery.type"
-						placeholder="活动类型"
-						style="width: 120px"
-						@change="handleSearch"
+				<div class="flex items-center space-x-4 flex-wrap gap-y-2">
+					<a-tooltip
+						placement="top"
+						title="选择活动类型"
 					>
-						<a-select-option value="">全部</a-select-option>
-						<a-select-option value="羽毛球">羽毛球</a-select-option>
-						<a-select-option value="乒乓球">乒乓球</a-select-option>
-						<a-select-option value="网球">网球</a-select-option>
-					</a-select>
+						<a-select
+							v-model:value="searchQuery.type"
+							placeholder="活动类型"
+							style="width: 130px"
+							@change="handleSearch"
+							class="!rounded-xl filter-select"
+						>
+							<a-select-option value="">全部类型</a-select-option>
+							<a-select-option value="羽毛球">羽毛球</a-select-option>
+							<a-select-option value="乒乓球">乒乓球</a-select-option>
+							<a-select-option value="网球">网球</a-select-option>
+						</a-select>
+					</a-tooltip>
 
-					<a-select
-						v-model:value="searchQuery.feeType"
-						placeholder="费用类型"
-						style="width: 120px"
-						@change="handleSearch"
+					<a-tooltip
+						placement="top"
+						title="选择费用类型"
 					>
-						<a-select-option value="">全部</a-select-option>
-						<a-select-option value="免费">免费</a-select-option>
-						<a-select-option value="AA制">AA制</a-select-option>
-						<a-select-option value="固定费用">固定费用</a-select-option>
-					</a-select>
+						<a-select
+							v-model:value="searchQuery.feeType"
+							placeholder="费用类型"
+							style="width: 130px"
+							@change="handleSearch"
+							class="!rounded-xl filter-select"
+						>
+							<a-select-option value="">全部费用</a-select-option>
+							<a-select-option value="免费">免费</a-select-option>
+							<a-select-option value="AA制">AA制</a-select-option>
+							<a-select-option value="固定费用">固定费用</a-select-option>
+						</a-select>
+					</a-tooltip>
 
-					<a-select
-						v-model:value="searchQuery.difficulty"
-						placeholder="难度等级"
-						style="width: 120px"
-						@change="handleSearch"
+					<a-tooltip
+						placement="top"
+						title="选择活动难度等级"
 					>
-						<a-select-option value="">全部</a-select-option>
-						<a-select-option :value="1">1星</a-select-option>
-						<a-select-option :value="2">2星</a-select-option>
-						<a-select-option :value="3">3星</a-select-option>
-						<a-select-option :value="4">4星</a-select-option>
-						<a-select-option :value="5">5星</a-select-option>
-					</a-select>
+						<a-select
+							v-model:value="searchQuery.difficulty"
+							placeholder="难度等级"
+							style="width: 130px"
+							@change="handleSearch"
+							class="!rounded-xl filter-select"
+						>
+							<a-select-option value="">全部难度</a-select-option>
+							<a-select-option :value="1">1星 (入门)</a-select-option>
+							<a-select-option :value="2">2星 (初级)</a-select-option>
+							<a-select-option :value="3">3星 (中级)</a-select-option>
+							<a-select-option :value="4">4星 (高级)</a-select-option>
+							<a-select-option :value="5">5星 (专业)</a-select-option>
+						</a-select>
+					</a-tooltip>
 
-					<a-select
-						v-model:value="sortBy"
-						placeholder="排序方式"
-						style="width: 120px"
-						@change="handleSort"
+					<!-- <a-tooltip
+						placement="top"
+						title="选择排序方式"
 					>
-						<a-select-option value="startTime">开始时间</a-select-option>
-						<a-select-option value="regEnd">报名截止</a-select-option>
-						<a-select-option value="registeredCount">参与人数</a-select-option>
-					</a-select>
+						<a-select
+							v-model:value="sortBy"
+							placeholder="排序方式"
+							style="width: 130px"
+							@change="handleSort"
+							class="!rounded-xl filter-select"
+						>
+							<a-select-option value="startTime">开始时间</a-select-option>
+							<a-select-option value="regEnd">报名截止</a-select-option>
+							<a-select-option value="registeredCount">参与人数</a-select-option>
+						</a-select>
+					</a-tooltip> -->
 				</div>
 			</div>
 
@@ -228,6 +266,7 @@
 		UserOutlined,
 		CalendarOutlined,
 		MoneyCollectOutlined,
+		SearchOutlined,
 	} from '@ant-design/icons-vue'
 
 	const router = useRouter()
@@ -265,12 +304,12 @@
 				...Object.fromEntries(
 					Object.entries(searchQuery.value).filter(([_, value]) => value !== ''),
 				),
-				sortBy: sortBy.value,
-				sortOrder: sortOrder.value,
+				// sortBy: sortBy.value,
+				// sortOrder: sortOrder.value,
 			}
 
-			console.log('当前搜索条件:', searchQuery.value)
-			console.log('过滤后的参数:', params)
+			// console.log('当前搜索条件:', searchQuery.value)
+			// console.log('过滤后的参数:', params)
 
 			const { status, message: msg, data } = await api.getEventList(params)
 			if (status) {
@@ -384,5 +423,108 @@
 		-webkit-line-clamp: 3;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
+	}
+
+	/* 搜索框样式 */
+	.search-wrapper {
+		display: flex;
+		height: 44px;
+		border-radius: 12px;
+		overflow: hidden;
+		border: 2px solid #fbcfe8;
+		background-color: white;
+		align-items: stretch;
+	}
+
+	.search-wrapper:hover {
+		border-color: #f472b6;
+	}
+
+	.search-wrapper:focus-within {
+		border-color: #f472b6;
+		box-shadow: 0 0 0 2px rgba(244, 114, 182, 0.1);
+	}
+
+	:deep(.custom-search-input) {
+		flex: 1;
+		font-size: 16px;
+		border: none !important;
+		box-shadow: none !important;
+		height: 100% !important;
+		line-height: 40px;
+		padding: 0 12px;
+		margin: 0;
+		display: flex;
+		align-items: center;
+	}
+
+	:deep(.custom-search-input:hover),
+	:deep(.custom-search-input:focus) {
+		border: none !important;
+		box-shadow: none !important;
+	}
+
+	:deep(.custom-search-button) {
+		height: 100%;
+		min-height: 100%;
+		width: 56px;
+		border: none !important;
+		background-color: #f472b6 !important;
+		border-radius: 0 10px 10px 0;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+	}
+
+	:deep(.custom-search-button:hover) {
+		background-color: #ec4899 !important;
+	}
+
+	:deep(.custom-search-button .icon-wrapper) {
+		width: 20px;
+		height: 20px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		line-height: 1;
+	}
+
+	:deep(.custom-search-button .anticon) {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 20px;
+		color: white;
+		line-height: 1;
+	}
+
+	/* 筛选下拉框样式 */
+	:deep(.filter-select .ant-select-selector) {
+		height: 44px !important;
+		display: flex;
+		align-items: center;
+		border: 2px solid #e5e7eb !important;
+		border-radius: 12px !important;
+	}
+
+	:deep(.filter-select:hover .ant-select-selector) {
+		border-color: #f472b6 !important;
+	}
+
+	:deep(.filter-select.ant-select-focused .ant-select-selector) {
+		border-color: #ec4899 !important;
+		box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.1) !important;
+	}
+
+	:deep(.filter-select .ant-select-selection-placeholder) {
+		color: #9ca3af;
+	}
+
+	:deep(.filter-select .ant-select-selection-item) {
+		color: #374151;
+		font-weight: 500;
 	}
 </style>

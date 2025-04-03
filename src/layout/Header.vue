@@ -149,8 +149,8 @@
 							<a-menu-divider />
 
 							<a-menu-item
-								key="personal"
-								@click="handlePersonal"
+								key="profile"
+								@click="handleProfile"
 								class="px-6 py-2"
 							>
 								<div class="flex items-center">
@@ -269,8 +269,8 @@
 		router.push('/login')
 	}
 
-	const handlePersonal = () => {
-		router.push('/personal')
+	const handleProfile = () => {
+		router.push('/profile')
 	}
 
 	const handleAdmin = () => {

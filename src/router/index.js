@@ -52,6 +52,24 @@ const routes = [
 				component: () => import('@/views/Venue/VenueDetail.vue'),
 				meta: { title: '羽你同乐 • 场馆详情' },
 			},
+			{
+				path: 'profile',
+				name: 'Profile',
+				component: () => import('@/views/User/Profile.vue'),
+				meta: { title: '羽你同乐 • 个人中心' },
+			},
+			{
+				path: 'profile/edit',
+				name: 'ProfileEdit',
+				component: () => import('@/views/User/ProfileEdit.vue'),
+				meta: { title: '羽你同乐 • 编辑个人信息' },
+			},
+			{
+				path: 'profile/password',
+				name: 'ChangePassword',
+				component: () => import('@/views/User/ChangePassword.vue'),
+				meta: { title: '羽你同乐 • 修改密码' },
+			},
 			// {
 			// 	path: 'race',
 			// 	name: 'Race',
