@@ -2,29 +2,38 @@ import request from '../../request'
 
 export default {
 	// 获取场馆列表
-	getAdminVenueList(params) {
+	getVenueList(params) {
 		return request({
-			url: '/admin/venues',
+			url: '/venues',
 			method: 'get',
 			params,
 			mock: false,
 		})
 	},
 
-	// 新增场馆
-	addAdminVenue(data) {
+	// 获取场馆详情
+	getVenueDetail(id) {
 		return request({
-			url: '/admin/venues',
+			url: `/venues/${id}`,
+			method: 'get',
+			mock: false,
+		})
+	},
+
+	//创建场馆
+	createVenue(data) {
+		return request({
+			url: '/venues',
 			method: 'post',
 			data,
 			mock: false,
 		})
 	},
 
-	// 编辑场馆
-	updateAdminVenue(id, data) {
+	// 修改场馆
+	updateVenue(id, data) {
 		return request({
-			url: `/admin/venues/${id}`,
+			url: `/venues/${id}`,
 			method: 'put',
 			data,
 			mock: false,
@@ -32,9 +41,9 @@ export default {
 	},
 
 	// 删除场馆
-	deleteAdminVenue(id) {
+	deleteVenue(id) {
 		return request({
-			url: `/admin/venues/${id}`,
+			url: `/venues/${id}`,
 			method: 'delete',
 			mock: false,
 		})

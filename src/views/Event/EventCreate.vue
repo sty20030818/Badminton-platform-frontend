@@ -230,7 +230,7 @@
 										</div>
 										<div class="text-lg font-medium text-gray-600 mr-12">
 											总人数：
-											<span class="text-2xl text-pink-500">{{ formState.capacity }}</span>
+											<span class="text-2xl text-pink-500">{{ totalCapacity }}</span>
 											人
 										</div>
 									</h2>
@@ -366,13 +366,12 @@
 </template>
 
 <script setup>
-	import { ref, reactive } from 'vue'
+	import { ref, reactive, computed, onMounted } from 'vue'
 	import { message } from 'ant-design-vue'
 	import dayjs from 'dayjs'
 	import {
 		PlusOutlined,
 		DeleteOutlined,
-		PictureOutlined,
 		InfoCircleOutlined,
 		ClockCircleOutlined,
 		TeamOutlined,
@@ -380,11 +379,33 @@
 		FileTextOutlined,
 		EditOutlined,
 	} from '@ant-design/icons-vue'
-	import eventApi from '@/api/api'
+	import api from '@/api/api'
 	import { useRouter } from 'vue-router'
 
 	const router = useRouter()
 	const submitting = ref(false)
+	const venueOptions = ref([])
+
+	// 获取场馆列表
+	const fetchVenueList = async () => {
+		try {
+			const { status, data } = await api.getVenueList()
+			if (status) {
+				venueOptions.value = data.venues.map((venue) => ({
+					value: venue.id,
+					label: venue.name,
+					address: venue.location,
+				}))
+			}
+		} catch (error) {
+			message.error('获取场馆列表失败')
+		}
+	}
+
+	// 页面加载时获取场馆列表
+	onMounted(() => {
+		fetchVenueList()
+	})
 
 	// 表单数据
 	const defaultStartTime = dayjs().add(1, 'day').hour(20).minute(0).second(0)
@@ -405,7 +426,6 @@
 				description: '我是休闲组',
 			},
 		],
-		capacity: 6, // 总容量
 		feeType: '固定费用',
 		feeAmount: 35,
 		description: '我是活动描述',
@@ -440,29 +460,62 @@
 		status: [{ required: true, message: '请选择活动状态', trigger: 'change' }],
 	}
 
-	// 场馆选项（这里需要从API获取）
-	const venueOptions = [
-		{
-			value: 1,
-			label: '江南体育馆',
-			address: '杭州市滨江区江南大道100号',
-		},
-		{
-			value: 2,
-			label: '滨江体育馆',
-			address: '杭州市滨江区滨盛路200号',
-		},
-		{
-			value: 3,
-			label: '星光体育馆',
-			address: '杭州市滨江区星光大道300号',
-		},
-	]
+	// 提交表单
+	const handleCreate = async () => {
+		try {
+			submitting.value = true
 
-	// 更新总容量
-	const updateTotalCapacity = () => {
-		formState.capacity = formState.groups.reduce((sum, group) => sum + group.capacity, 0)
+			// 处理数据格式
+			const eventParams = {
+				title: formState.title,
+				cover: formState.cover,
+				type: formState.type,
+				difficulty: formState.difficulty,
+				startTime: formState.activityTime[0],
+				endTime: formState.activityTime[1],
+				regStart: formState.registrationTime[0],
+				regEnd: formState.registrationTime[1],
+				feeType: formState.feeType,
+				feeAmount: formState.feeAmount || 0,
+				description: formState.description,
+				status: formState.status,
+				venueId: formState.venueId,
+			}
+
+			// 创建活动
+			const { status, message: msg, errors, data } = await api.createEvent(eventParams)
+			if (status) {
+				// 创建活动成功后，依次创建所有小组
+				const eventId = data.event.id
+				try {
+					// 串行创建小组
+					for (const group of formState.groups) {
+						await api.createGroup({
+							name: group.name,
+							description: group.description,
+							capacity: group.capacity || 0,
+							eventId: eventId,
+						})
+					}
+					message.success('活动和小组创建成功')
+					router.push('/event')
+				} catch (groupError) {
+					message.error('小组创建失败：' + groupError.message)
+				}
+			} else {
+				message.error(errors?.[0] || msg || '活动创建失败')
+			}
+		} catch (error) {
+			message.error('活动创建失败：' + error.message)
+		} finally {
+			submitting.value = false
+		}
 	}
+
+	// 更新总容量（仅用于显示）
+	const totalCapacity = computed(() => {
+		return formState.groups.reduce((sum, group) => sum + (group.capacity || 0), 0)
+	})
 
 	// 添加分组
 	const addGroup = () => {
@@ -471,7 +524,6 @@
 			capacity: 6,
 			description: '',
 		})
-		updateTotalCapacity()
 	}
 
 	// 删除分组
@@ -481,13 +533,11 @@
 			return
 		}
 		formState.groups.splice(index, 1)
-		updateTotalCapacity()
 	}
 
 	// 监听分组容量变化
 	const watchGroupCapacity = (index, value) => {
-		formState.groups[index].capacity = value
-		updateTotalCapacity()
+		formState.groups[index].capacity = value || 0
 	}
 
 	// 图片上传前的处理
@@ -504,34 +554,6 @@
 	// 	}
 	// 	return true
 	// }
-
-	// 提交表单
-	const handleCreate = async () => {
-		try {
-			submitting.value = true
-			// 处理数据格式
-			const params = {
-				...formState, // 使用 formState 而不是 values
-				startTime: formState.activityTime[0],
-				endTime: formState.activityTime[1],
-				regStart: formState.registrationTime[0],
-				regEnd: formState.registrationTime[1],
-			}
-			console.log('提交的数据：', params) // 添加日志
-			const { status, message: msg, errors } = await eventApi.createEvent(params)
-			if (status) {
-				message.success('活动创建成功')
-			} else {
-				message.error(errors?.[0] || msg || '活动创建失败')
-			}
-
-			router.push('/event')
-		} catch (error) {
-			message.error('活动创建失败：' + error.message)
-		} finally {
-			submitting.value = false
-		}
-	}
 
 	// 取消创建
 	const onCancel = () => {

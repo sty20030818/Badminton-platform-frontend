@@ -2,6 +2,7 @@ import axios from 'axios'
 import { message } from 'ant-design-vue'
 import config from '@/config'
 import { useAuthStore } from '@/stores/auth'
+import { useRouter } from 'vue-router'
 
 const service = axios.create({
 	baseURL: config.BASE_API,
@@ -42,7 +43,15 @@ service.interceptors.response.use(
 		return res.data
 	},
 	(error) => {
-		if (error.response && error.response.data) {
+		if (error.response?.data) {
+			// 处理token过期的情况
+			if (error.response.status === 401) {
+				const authStore = useAuthStore()
+				authStore.clearToken()
+				message.error('登录已过期，请重新登录')
+				const router = useRouter()
+				router.push('/login')
+			}
 			return error.response.data
 		}
 		return {
@@ -57,7 +66,8 @@ function request(options) {
 	options.method = options.method || 'get'
 	//*关于get请求参数的处理
 	if (options.method.toLowerCase() === 'get') {
-		options.params = options.data
+		// 移除这行，因为 axios 会自动处理 params
+		// options.params = options.data
 	}
 	//*对mock的开关做一个处理
 	let isMock = config.mock

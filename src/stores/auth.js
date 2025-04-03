@@ -7,14 +7,14 @@ export const useAuthStore = defineStore('auth', () => {
 	const userInfo = ref(JSON.parse(localStorage.getItem('userInfo')) || null)
 
 	// 设置token
-	function setToken(newToken) {
+	const setToken = (newToken) => {
 		token.value = newToken
 		localStorage.setItem('token', newToken)
 		isAuthenticated.value = true
 	}
 
 	// 清除token
-	function clearToken() {
+	const clearToken = () => {
 		token.value = ''
 		localStorage.removeItem('token')
 		localStorage.removeItem('userInfo')
@@ -23,18 +23,18 @@ export const useAuthStore = defineStore('auth', () => {
 	}
 
 	// 获取token
-	function getToken() {
+	const getToken = () => {
 		return token.value
 	}
 
 	// 设置用户信息
-	function setUser(info) {
+	const setUser = (info) => {
 		userInfo.value = info
 		localStorage.setItem('userInfo', JSON.stringify(info))
 	}
 
 	// 获取用户信息
-	function getUser() {
+	const getUser = () => {
 		return userInfo.value
 	}
 

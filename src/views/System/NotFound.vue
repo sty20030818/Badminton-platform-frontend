@@ -13,9 +13,9 @@
 				size="large"
 				shape="round"
 				class="back-btn"
-				@click="router.push('/')"
+				@click="router.back()"
 			>
-				返回首页
+				返回上一页
 			</a-button>
 		</div>
 	</div>

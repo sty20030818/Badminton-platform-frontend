@@ -2,7 +2,7 @@ import request from '../../request'
 
 export default {
 	// 获取活动列表
-	getEventList(params) {
+	getAdminEventList(params) {
 		return request({
 			url: '/admin/events',
 			method: 'get',
@@ -12,7 +12,7 @@ export default {
 	},
 
 	// 新增活动
-	addEvent(data) {
+	addAdminEvent(data) {
 		return request({
 			url: '/admin/events',
 			method: 'post',
@@ -22,7 +22,7 @@ export default {
 	},
 
 	// 编辑活动
-	updateEvent(id, data) {
+	updateAdminEvent(id, data) {
 		return request({
 			url: `/admin/events/${id}`,
 			method: 'put',
@@ -32,7 +32,7 @@ export default {
 	},
 
 	// 删除活动
-	deleteEvent(id) {
+	deleteAdminEvent(id) {
 		return request({
 			url: `/admin/events/${id}`,
 			method: 'delete',

@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
 //*制定路由规则
 const routes = [
@@ -33,12 +34,24 @@ const routes = [
 				component: () => import('@/views/Event/EventDetail.vue'),
 				meta: { title: '羽你同乐 • 活动详情' },
 			},
-			// {
-			// 	path: 'venue',
-			// 	name: 'Venue',
-			// 	component: () => import('@/views/Venue.vue'),
-			// 	meta: { title: '羽你同乐 • 场地' },
-			// },
+			{
+				path: 'event/:id/edit',
+				name: 'EventEdit',
+				component: () => import('@/views/Event/EventEdit.vue'),
+				meta: { title: '羽你同乐 • 编辑活动' },
+			},
+			{
+				path: 'venue',
+				name: 'Venue',
+				component: () => import('@/views/Venue/Venue.vue'),
+				meta: { title: '羽你同乐 • 场地' },
+			},
+			{
+				path: 'venue/:id',
+				name: 'VenueDetail',
+				component: () => import('@/views/Venue/VenueDetail.vue'),
+				meta: { title: '羽你同乐 • 场馆详情' },
+			},
 			// {
 			// 	path: 'race',
 			// 	name: 'Race',
@@ -132,12 +145,26 @@ const router = createRouter({
 
 // 全局前置守卫
 router.beforeEach((to, from, next) => {
+	const authStore = useAuthStore()
+	const token = authStore.getToken()
 	// 设置页面标题
 	const { title } = to.meta
 	if (title) {
 		document.title = title
 	}
-	next()
+
+	// 如果路由需要认证
+	if (to.meta.auth) {
+		// 如果没有token，重定向到登录页
+		if (!token) {
+			next('/login')
+		} else {
+			next()
+		}
+	} else {
+		// 如果路由不需要认证，直接放行
+		next()
+	}
 })
 
 export default router

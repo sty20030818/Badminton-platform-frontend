@@ -2,7 +2,7 @@ import request from '../../request'
 
 export default {
 	// 获取用户列表
-	getUserList(params) {
+	getAdminUserList(params) {
 		return request({
 			url: '/admin/users',
 			method: 'get',
@@ -12,7 +12,7 @@ export default {
 	},
 
 	// 新增用户
-	addUser(data) {
+	addAdminUser(data) {
 		return request({
 			url: '/admin/users',
 			method: 'post',
@@ -22,7 +22,7 @@ export default {
 	},
 
 	// 编辑用户
-	updateUser(id, data) {
+	updateAdminUser(id, data) {
 		return request({
 			url: `/admin/users/${id}`,
 			method: 'put',
@@ -32,7 +32,7 @@ export default {
 	},
 
 	// 删除用户
-	deleteUser(id) {
+	deleteAdminUser(id) {
 		return request({
 			url: `/admin/users/${id}`,
 			method: 'delete',

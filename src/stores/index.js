@@ -6,6 +6,7 @@ function initState() {
 	return {
 		isCollapse: false,
 		currentPage: '', //* 当前页面
+		pagination: null, //* 分页状态
 	}
 }
 

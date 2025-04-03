@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="h-screen overflow-hidden">
 		<!-- 背景装饰 -->
 		<div class="absolute inset-0 overflow-hidden pointer-events-none">
 			<div
@@ -86,22 +86,23 @@
 </template>
 
 <script setup>
+	import { onMounted, onUnmounted } from 'vue'
 	import { useRouter } from 'vue-router'
 	import { useAllDataStore } from '@/stores'
 
 	const router = useRouter()
 	const store = useAllDataStore()
 
-	// 页面加载时获取数据和设置当前页面
+	// 页面加载时获取数据和设置当前页面，同时禁止滚动
 	onMounted(() => {
 		store.state.currentPage = 'home'
-		// console.log('当前页面已设置为:', store.state.currentPage)
+		document.body.style.overflow = 'hidden'
 	})
 
-	// 组件卸载时清除当前页面
+	// 组件卸载时清除当前页面，恢复滚动
 	onUnmounted(() => {
 		store.state.currentPage = ''
-		// console.log('当前页面已清除')
+		document.body.style.overflow = 'auto'
 	})
 
 	const goToEvent = () => {

@@ -8,6 +8,8 @@ import adminHomeApi from './modules/admin/home'
 import authApi from './modules/user/auth'
 import userApi from './modules/user/user'
 import eventApi from './modules/user/event'
+import groupApi from './modules/user/group'
+import venueApi from './modules/user/venue'
 
 export default {
 	...adminUserApi,
@@ -17,4 +19,6 @@ export default {
 	...authApi,
 	...userApi,
 	...eventApi,
+	...groupApi,
+	...venueApi,
 }

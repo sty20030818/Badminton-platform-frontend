@@ -3,6 +3,7 @@ import request from '../../request'
 export default {
 	// 获取活动列表
 	getEventList(params) {
+		// console.log('API 请求参数:', params)
 		return request({
 			url: '/events',
 			method: 'get',
@@ -30,20 +31,21 @@ export default {
 		})
 	},
 
-	// 报名参加活动
-	joinEvent(id) {
+	// 修改活动
+	updateEvent(id, data) {
 		return request({
-			url: `/events/${id}/join`,
-			method: 'post',
+			url: `/events/${id}`,
+			method: 'put',
+			data,
 			mock: false,
 		})
 	},
 
-	// 取消报名
-	cancelJoin(id) {
+	// 删除活动
+	deleteEvent(id) {
 		return request({
-			url: `/events/${id}/cancel`,
-			method: 'post',
+			url: `/events/${id}`,
+			method: 'delete',
 			mock: false,
 		})
 	},
