@@ -222,7 +222,7 @@
 				}),
 			}
 
-			const { status, data } = await proxy.$api.getUserList(params)
+			const { status, data } = await proxy.$api.getAdminUserList(params)
 			if (status) {
 				const { users, pagination: pager } = data
 				dataSource.value = users.map((user) => ({

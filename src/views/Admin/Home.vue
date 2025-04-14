@@ -13,7 +13,7 @@
 						<template #avatar>
 							<a-avatar
 								:size="88"
-								:src="getImageUrl('user')"
+								:src="getImageUrl('admin')"
 							/>
 						</template>
 					</a-card-meta>

@@ -196,7 +196,7 @@
 				status,
 			}
 
-			const { status: success, data } = await proxy.$api.getVenueList(params)
+			const { status: success, data } = await proxy.$api.getAdminVenueList(params)
 			if (success) {
 				const { venues, pagination: pager } = data
 				dataSource.value = venues.map((venue) => ({

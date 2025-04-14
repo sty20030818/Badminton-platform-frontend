@@ -200,7 +200,7 @@
 				params.endTime = dateRange[1].format('YYYY-MM-DD HH:mm:ss')
 			}
 
-			const { status, data } = await proxy.$api.getEventList(params)
+			const { status, data } = await proxy.$api.getAdminEventList(params)
 			if (status) {
 				const { events, pagination: pager } = data
 				dataSource.value = events.map((event) => ({

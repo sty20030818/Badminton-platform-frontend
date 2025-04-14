@@ -316,21 +316,51 @@
 		text-align: center;
 		padding: 60px;
 		z-index: 1;
-		transition:
-			0.6s ease-in-out 1.2s,
-			visibility 0s 1s;
+		transition: all 0.6s ease-in-out;
 	}
 
 	.container.active .form-box {
 		right: 50%;
 	}
 
-	.form-box.register {
-		visibility: hidden;
+	/* 登录表单 */
+	.form-box.login {
+		opacity: 1;
+		visibility: visible;
+		transform: translateX(0);
 	}
 
+	/* 注册表单 */
+	.form-box.register {
+		opacity: 0;
+		visibility: hidden;
+		transform: translateX(100%);
+	}
+
+	/* 切换到注册时,登录表单滑出 */
+	.container.active .form-box.login {
+		transform: translateX(-100%);
+	}
+
+	/* 切换到登录时,注册表单滑出 */
+	.container:not(.active) .form-box.register {
+		transform: translateX(100%);
+	}
+
+	/* 显示注册表单 */
 	.container.active .form-box.register {
+		opacity: 1;
 		visibility: visible;
+		transform: translateX(0);
+		transition-delay: 0.6s;
+	}
+
+	/* 显示登录表单 */
+	.container:not(.active) .form-box.login {
+		opacity: 1;
+		visibility: visible;
+		transform: translateX(0);
+		transition-delay: 0.6s;
 	}
 
 	.form-box :deep(.ant-form) {

@@ -48,7 +48,7 @@
 				<a-badge>
 					<a-avatar
 						size="large"
-						:src="getImageUrl('user')"
+						:src="getImageUrl('admin')"
 					/>
 				</a-badge>
 
@@ -58,7 +58,7 @@
 							<a-space size="middle">
 								<a-avatar
 									size="large"
-									:src="getImageUrl('user')"
+									:src="getImageUrl('admin')"
 								/>
 
 								<a-space

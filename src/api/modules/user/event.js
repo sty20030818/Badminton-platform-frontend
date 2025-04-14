@@ -49,4 +49,33 @@ export default {
 			mock: false,
 		})
 	},
+
+	// 获取活动评论列表
+	getEventCommentList(id, params) {
+		return request({
+			url: `/events/${id}/comments`,
+			method: 'get',
+			params,
+			mock: false,
+		})
+	},
+
+	//创建活动评论
+	createEventComment(id, data) {
+		return request({
+			url: `/events/${id}/comments`,
+			method: 'post',
+			data,
+			mock: false,
+		})
+	},
+
+	// 删除活动评论
+	deleteEventComment(id, commentId) {
+		return request({
+			url: `/events/${id}/comments/${commentId}`,
+			method: 'delete',
+			mock: false,
+		})
+	},
 }

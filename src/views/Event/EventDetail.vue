@@ -226,6 +226,76 @@
 								</div>
 							</div>
 						</div>
+
+						<!-- 评论区域 -->
+						<div class="mt-8">
+							<h2 class="text-xl font-bold mb-4">活动评论</h2>
+
+							<!-- 发表评论 -->
+							<div class="mb-6">
+								<div class="relative">
+									<a-textarea
+										v-model:value="newComment"
+										placeholder="写下你的评论..."
+										:rows="4"
+										:maxLength="200"
+										class="!rounded-xl !resize-none"
+										style="resize: none"
+									/>
+									<div class="absolute bottom-2 left-2 text-gray-400 text-sm">
+										{{ newComment.length }}/200
+									</div>
+								</div>
+								<div class="flex justify-end mt-2">
+									<a-button
+										type="primary"
+										:loading="commentLoading"
+										@click="handleCreateComment"
+										class="!bg-[#ff7eb3] !border-none"
+									>
+										发表评论
+									</a-button>
+								</div>
+							</div>
+
+							<!-- 评论列表 -->
+							<div class="space-y-4">
+								<div
+									v-for="comment in comments"
+									:key="comment.id"
+									class="bg-gray-50 rounded-xl p-4"
+								>
+									<div class="flex justify-between items-start">
+										<div class="flex items-center gap-3">
+											<a-avatar
+												:size="40"
+												:src="getAvatarImageUrl(comment.user.avatar)"
+											>
+												{{ comment.user.nickname[0] }}
+											</a-avatar>
+											<div>
+												<p class="font-medium">{{ comment.user.nickname }}</p>
+												<p class="text-sm text-gray-500">
+													{{ formatDateTime(comment.createdAt) }}
+												</p>
+											</div>
+										</div>
+										<a-button
+											v-if="comment.user.id === authStore.getUser()?.user.id"
+											type="text"
+											size="large"
+											danger
+											@click="handleDeleteComment(comment.id)"
+										>
+											<div class="flex items-center gap-2">
+												<DeleteOutlined />
+											</div>
+										</a-button>
+									</div>
+									<p class="mt-3 text-gray-800 text-lg">{{ comment.content }}</p>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -259,6 +329,11 @@
 	const loading = ref(true)
 	const selectedGroup = ref(null)
 	const authStore = useAuthStore()
+
+	// 评论相关
+	const comments = ref([])
+	const newComment = ref('')
+	const commentLoading = ref(false)
 
 	// 检查用户是否已加入某个小组
 	const userJoinedGroup = computed(() => {
@@ -508,9 +583,76 @@
 		}
 	}
 
-	// 页面加载时获取活动详情
+	// 获取评论列表
+	const fetchComments = async () => {
+		try {
+			const { status, data } = await api.getEventCommentList(eventId)
+			if (status) {
+				comments.value = data.comments
+			}
+		} catch (error) {
+			console.error('获取评论列表失败:', error)
+		}
+	}
+
+	// 创建评论
+	const handleCreateComment = async () => {
+		if (!newComment.value.trim()) {
+			message.warning('请输入评论内容')
+			return
+		}
+
+		commentLoading.value = true
+		try {
+			const { status, data } = await api.createEventComment(eventId, {
+				content: newComment.value.trim(),
+			})
+			if (status) {
+				message.success('发表评论成功')
+				newComment.value = ''
+				comments.value.unshift(data.comment)
+			} else {
+				message.error('发表评论失败')
+			}
+		} catch (error) {
+			console.error('发表评论失败:', error)
+			message.error('发表评论失败')
+		} finally {
+			commentLoading.value = false
+		}
+	}
+
+	// 删除评论
+	const handleDeleteComment = (commentId) => {
+		Modal.confirm({
+			title: '确认删除评论',
+			content: '删除后评论将无法恢复，是否继续？',
+			okText: '确认删除',
+			cancelText: '取消',
+			centered: true,
+			width: 400,
+			okType: 'danger',
+			async onOk() {
+				try {
+					const { status } = await api.deleteEventComment(eventId, commentId)
+					if (status) {
+						message.success('评论已删除')
+						comments.value = comments.value.filter((comment) => comment.id !== commentId)
+					} else {
+						message.error('删除失败')
+					}
+				} catch (error) {
+					console.error('删除评论失败:', error)
+					message.error('删除失败')
+				}
+			},
+		})
+	}
+
+	// 页面加载时获取活动详情和评论
 	onMounted(() => {
 		fetchEventDetail()
+		fetchComments()
 	})
 </script>
 
