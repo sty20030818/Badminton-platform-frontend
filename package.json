@@ -8,10 +8,13 @@
     "build": "vite build",
     "preview": "vite preview",
     "format:check": "prettier --check \"**/*.{js,json,md,vue}\"",
-		"format": "prettier --write \"**/*.{js,json,md,vue}\""
+    "format": "prettier --write \"**/*.{js,json,md,vue}\""
   },
   "dependencies": {
+    "@alova/adapter-xhr": "^2.2.1",
+    "@alova/vue-options": "^2.0.13",
     "@ant-design/icons-vue": "^7.0.1",
+    "alova": "^3.3.4",
     "ant-design-vue": "^4.2.6",
     "axios": "^1.8.1",
     "dayjs": "^1.11.13",
